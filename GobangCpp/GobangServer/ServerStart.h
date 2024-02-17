@@ -1,6 +1,7 @@
 #pragma once
 #include "WinSock2.h"
 #include "ServerLogic.h"
+#include "Log.h"
 
 #define PORT 4444
 #define MESGSIZE 1024

@@ -1,5 +1,4 @@
 #include "ServerStart.h"
-#include "Log.h"
 
 ServerStart::ServerStart() {
 }
@@ -34,8 +33,19 @@ void ServerStart::Start() {
         return;
     }
 
+    //char hostName[256];
+    //if(!gethostname(hostName,sizeof(hostName)))
+    //{
+    //    hostent *host=gethostbyname(hostName);
+    //    getaddrinfo();
+    //    if(host!=NULL)
+    //    {
+    //        //*(struct in_addr*)*host->h_addr_list
+    //        Log::Info("服务器IP : ", *host->h_addr_list);
+    //    }
+    //}
     Log::Info("服务器开启成功等待客户端连接！");
-    Log::Info("服务器IP : ", inet_ntoa(addrServer.sin_addr));
+    //Log::Info("服务器IP : ", addrServer);
     Log::Info("服务器端口号 ： ", addrServer.sin_port);
 
     SOCKADDR_IN addrClient;
@@ -48,11 +58,9 @@ void ServerStart::Start() {
             break;
         }
 
-        char* ip = inet_ntoa(addrClient.sin_addr);
+        Log::Info("客户端连接成功 IP : ", addrClient);
 
-        Log::Info("客户端连接成功 IP : ", ip);
-
-        serverLogic.AddClient(ip, socketConnect);
+        serverLogic.AddClient(addrClient, socketConnect);
     }
 
     closesocket(socketServer);

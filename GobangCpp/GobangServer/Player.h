@@ -6,11 +6,3 @@ public:
 	Player();
 	~Player();
 };
-
-Player::Player()
-{
-}
-
-Player::~Player()
-{
-}

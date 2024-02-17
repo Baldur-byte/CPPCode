@@ -3,7 +3,7 @@
 
 GameStart::GameStart() {
     drawParam = BoardDrawParam(20, 1, 4, 2, 3, 100);
-    curGame = Game();
+    //curGame = Game();
 }
 
 GameStart::~GameStart() {

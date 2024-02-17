@@ -1,4 +1,5 @@
 #pragma once
+#include "SocketClient.h"
 
 enum class ChessType {
     None,
@@ -12,6 +13,8 @@ public:
     ~Player();
     ChessType GetChessType();
     void SetChessType(ChessType type);
+    void PlaceChess(int x, int y);
 private:
     ChessType chessType;
+    SocketClient socketClient;
 };

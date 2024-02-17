@@ -6,8 +6,6 @@ Game::Game() {
             chessBoard[i][j] = ChessBoardCell(i, j);
         }
     }
-
-    player = Player();
 }
 
 Game::~Game() {
@@ -16,6 +14,7 @@ Game::~Game() {
 
 void Game::Start() {
     player.SetChessType(ChessType::Black);
+    isTurn = true;
 }
 
 void Game::ChangePlayer() {
@@ -27,12 +26,18 @@ bool Game::IsFinished() {
 }
 
 void Game::Click(int x, int y) {
+    if (!isTurn)
+    {
+        return;
+    }
     if (player.GetChessType() == ChessType::Black) {
         chessBoard[x][y].cellType = CellType::Black;
     }
     else if (player.GetChessType() == ChessType::White) {
         chessBoard[x][y].cellType = CellType::White;
     }
+    player.PlaceChess(x, y);
+    isTurn = false;
 }
 
 ChessBoardCell** Game::GetChessBoardData() {
@@ -41,4 +46,15 @@ ChessBoardCell** Game::GetChessBoardData() {
         result[i] = chessBoard[i];
     }
     return result;
+}
+
+bool Game::checkHorizontal(int x, int y)
+{
+
+    return false;
+}
+
+bool Game::checkVertical(int x, int y)
+{
+    return false;
 }

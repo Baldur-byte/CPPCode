@@ -15,15 +15,12 @@ public:
 	void Send(const char* sendbuf);
 	void Start(char* ip, SOCKET socketClient);
 	void CloseSocket();
-	char* GetIp();
-private:
-	void ReceiveT();
-	void SendT();
-
-	char* ip;
+	char* id;
 	SOCKET socketClient;
+private:
+	static void SendT();
+
 	Player player;
-	char receiveBuf[1024];
 	queue<const char*> queueToSend;
 	thread ReceiveThread;
 	thread SendThread;

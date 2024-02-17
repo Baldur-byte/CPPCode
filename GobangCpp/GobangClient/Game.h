@@ -36,6 +36,10 @@ public:
     void Click(int x, int y);
     ChessBoardCell** GetChessBoardData();
 private:
+    bool isTurn;
     Player player;
     ChessBoardCell chessBoard[15][15];
+
+    bool checkHorizontal(int x, int y);
+    bool checkVertical(int x, int y);
 };

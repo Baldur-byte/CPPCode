@@ -8,9 +8,11 @@ ServerLogic::~ServerLogic() {
 
 }
 
-void ServerLogic::AddClient(char* ip, SOCKET socket) {
+void ServerLogic::AddClient(SOCKADDR_IN addr, SOCKET socket) {
+    char* ip = CommonMethod::AddrToStr(addr);
+
     for (int i = 0; i < clientCount; i++) {
-        if (_stricmp(clients[i].GetIp(), ip)) {
+        if (_stricmp(clients[i].id, ip)) {
             return;
         }
     }

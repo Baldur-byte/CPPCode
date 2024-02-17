@@ -2,6 +2,7 @@
 
 Player::Player() {
     chessType = ChessType::None;
+    socketClient.Start(this);
 }
 
 Player::~Player() {
@@ -14,4 +15,9 @@ ChessType Player::GetChessType() {
 
 void Player::SetChessType(ChessType type) {
     this->chessType = type;
+}
+
+void Player::PlaceChess(int x, int y)
+{
+    socketClient.Send();
 }
