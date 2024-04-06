@@ -6,3 +6,8 @@
 *.vcxproj
 *.filters
 *.user
+GobangCpp/GobangClient/.vs/GobangClient/v17/
+
+*.vsidx
+
+GobangCpp/GobangClient/.vs/GobangClient/FileContentIndex/
