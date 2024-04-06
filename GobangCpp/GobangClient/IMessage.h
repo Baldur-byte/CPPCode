@@ -7,7 +7,7 @@ enum class SCMessageType {
     PlayerInfo = 3,
     RoomList = 4,
     RoomInfo = 5,
-    PlaceChessSC = 6,
+    UpdateChessBoard = 6,
     OperationResult = 7,
     GameStart = 8,
     Change = 9,
@@ -34,7 +34,7 @@ enum class CSMessageType {
 __interface IMessage
 {
 };
-
+#pragma region Server->Client
 struct HeartBeatSC_Message : IMessage
 {
     long long serverTime;
@@ -61,7 +61,7 @@ struct RoomInfo_Message : IMessage
     int playerIds[];
 };
 
-struct PlaceChessSC_Message : IMessage 
+struct UpdateChessBoard_Message : IMessage
 {
     short chessBoard[15][15];
 };
@@ -84,7 +84,9 @@ struct GameFinish_Message : IMessage
 {
     int isWin;
 };
+#pragma endregion
 
+#pragma region Client->Server
 struct HeartBeatCS_Message : IMessage
 {
 };
@@ -142,19 +144,7 @@ struct QuitGame_Message : IMessage
 struct Update_Message : IMessage
 {
 };
-
-///
-/// ³õ°æ
-///
-struct playchess : IMessage
-{
-    char text[100];
-    short textlen;
-    short result;
-    short type;
-    short x;
-    short y;
-};
+#pragma endregion
 
 struct MessagePack
 {

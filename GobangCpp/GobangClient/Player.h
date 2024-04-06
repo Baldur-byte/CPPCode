@@ -1,5 +1,5 @@
 #pragma once
-#include "SocketClient.h"
+#include "ClientSocket.h"
 
 class Game;
 
@@ -24,7 +24,7 @@ public:
     bool isTurn;
 protected:
     ChessType chessType;
-    SocketClient socketClient;
+    ClientSocket clientSocket;
 private:
     Game* game;
 };

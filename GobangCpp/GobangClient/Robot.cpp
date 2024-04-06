@@ -8,7 +8,7 @@ Robot::~Robot(){
 
 void Robot::JoinGame() {
     JoinRoom_Message message;
-    socketClient.Send(CSMessageType::JoinRoom, &message, sizeof(JoinRoom_Message));
+    clientSocket.Send(CSMessageType::JoinRoom, &message, sizeof(JoinRoom_Message));
 }
 
 

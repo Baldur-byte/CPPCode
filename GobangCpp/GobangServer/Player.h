@@ -1,6 +1,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-class Client;
+class ClientSocket;
 class Room;
 
 enum class ChessType {
@@ -13,7 +13,7 @@ class Player
 {
 public:
 	Player();
-	Player(Client* clientSocket);
+	Player(ClientSocket* clientSocket);
 	~Player();
 #pragma region Server->Client
 	void UpdateChessBoard();
@@ -35,7 +35,7 @@ public:
 	bool isInRoom;
 
 private:
-	Client* client;
+	ClientSocket* clientSocket;
 	ChessType chessType;
 	Room* room;
 };

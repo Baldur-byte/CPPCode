@@ -1,7 +1,7 @@
 #include "ServerLogic.h"
 
 ServerLogic::ServerLogic() {
-    clientCount = 0;
+    clientSocketCount = 0;
 }
 
 ServerLogic::~ServerLogic() {
@@ -11,13 +11,13 @@ ServerLogic::~ServerLogic() {
 void ServerLogic::AddClient(SOCKADDR_IN addr, SOCKET socket) {
     char* ip = CommonMethod::AddrToStr(addr);
 
-    for (int i = 0; i < clientCount; i++) {
-        if (strcmp(clients[i].id, ip) == 0) {
+    for (int i = 0; i < clientSocketCount; i++) {
+        if (strcmp(clientSockets[i].id, ip) == 0) {
             return;
         }
     }
-    clients[clientCount].Start(ip, socket, this);
-    clientCount++;
+    clientSockets[clientSocketCount].Start(ip, socket, this);
+    clientSocketCount++;
 }
 
 bool ServerLogic::JoinRoom(Player* player) {

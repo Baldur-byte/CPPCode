@@ -1,21 +1,21 @@
 #include "Player.h"
 #include "Room.h"
-#include "Client.h"
+#include "ClientSocket.h"
 
 Player::Player()
 {
-    chessType = ChessType::None;
-    client = nullptr;
-    room = nullptr;
-    isInRoom = false;
+    this->chessType = ChessType::None;
+    this->clientSocket = nullptr;
+    this->room = nullptr;
+    this->isInRoom = false;
 }
 
-Player::Player(Client* clientSocket)
+Player::Player(ClientSocket* clientSocket)
 {
-    chessType = ChessType::None;
-    client = clientSocket;
-    room = nullptr;
-    isInRoom = false;
+    this->chessType = ChessType::None;
+    this->clientSocket = clientSocket;
+    this->room = nullptr;
+    this->isInRoom = false;
 }
 
 Player::~Player()
@@ -32,19 +32,19 @@ void Player::UpdateChessBoard() {
             message.chessBoard[i][j] = chessboard[i][j];
         }
     }
-    client->Send(SCMessageType::UpdateChessBoard, &message, sizeof(UpdateChessBoard_Message));
+    clientSocket->Send(SCMessageType::UpdateChessBoard, &message, sizeof(UpdateChessBoard_Message));
 }
 
 void Player::GameStart(ChessType type) {
     GameStart_Message message;
     message.chessType = static_cast<int>(this->chessType);
     message.turn = type == this->chessType;
-    client->Send(SCMessageType::GameStart, &message, sizeof(GameStart_Message));
+    clientSocket->Send(SCMessageType::GameStart, &message, sizeof(GameStart_Message));
 }
 void Player::ChangePlayer() {
     Change_Message message;
     message.chessType = static_cast<int>(room->turn);
-    client->Send(SCMessageType::Change, &message, sizeof(Change_Message));
+    clientSocket->Send(SCMessageType::Change, &message, sizeof(Change_Message));
 }
 
 void Player::GameFinish(int win) {
@@ -60,18 +60,20 @@ void Player::GameFinish(int win) {
             message.isWin = -1;
         }
     }
-    client->Send(SCMessageType::GameFinish, &message, sizeof(GameFinish_Message));
+    clientSocket->Send(SCMessageType::GameFinish, &message, sizeof(GameFinish_Message));
 }
 #pragma endregion
 
 #pragma region Client->Server
 void Player::JoinRoom(Room* room) {
     this->room = room;
+    this->isInRoom = true;
 }
 
 void Player::ExitRoom() {
     this->room = nullptr;
-    chessType = ChessType::None;
+    this->chessType = ChessType::None;
+    this->isInRoom = false;
 }
 
 void Player::StartGame() {
@@ -79,7 +81,7 @@ void Player::StartGame() {
 }
 
 void Player::QuitGame() {
-    client->CloseSocket();
+    clientSocket->CloseSocket();
 }
 #pragma endregion
 

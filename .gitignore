@@ -23,3 +23,7 @@ GobangCpp/GobangProtocol/x64/
 GobangCpp/GobangServer/.vs/
 
 GobangCpp/GobangServer/x64/
+
+GobangCpp/GobangClient/GobangClient/x64/
+
+GobangCpp/GobangServer/GobangServer/x64/

@@ -2,7 +2,7 @@
 #include "WinSock2.h"
 #include "CommonMethod.h"
 #include "Room.h"
-#include "Client.h"
+#include "ClientSocket.h"
 
 class ServerLogic {
 public:
@@ -12,7 +12,7 @@ public:
     bool JoinRoom(Player* player);
     bool ExitRoom(Player* player);
 private:
-    Client clients[100];
+    ClientSocket clientSockets[100];
     Room rooms[1];
-    int clientCount;
+    int clientSocketCount;
 };

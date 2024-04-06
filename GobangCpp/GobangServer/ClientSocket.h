@@ -14,25 +14,37 @@ using namespace std;
 
 class ServerLogic;
 
-class Client
+enum class ClientState {
+	DisConnected = 0,
+	Connected = 1,
+};
+
+class ClientSocket
 {
 public:
-	Client();
-	~Client();
+	ClientSocket();
+	~ClientSocket();
+	void Start(char* ip, SOCKET socketClient, ServerLogic* serverLogic);
 	void Send(SCMessageType type, IMessage* message, size_t len);
 	void Receive(MessagePack* message);
-	void Start(char* ip, SOCKET socketClient, ServerLogic* serverLogic);
+	ClientState GetState();
+	int GetHeartBeatInterval();
+	void TimePass();
 	void CloseSocket();
 	char* id;
 	SOCKET socketClient;
 	queue<MessagePack> queueToSend;
 private:
-	static void SendT(Client* client);
-	static void ReceiveT(Client* client);
+	static void SendT(ClientSocket* client);
+	static void ReceiveT(ClientSocket* client);
+	static void HeartBeatT(ClientSocket* client);
 	ServerLogic* serverLogic;
 	Player player;
 	thread ReceiveThread;
 	thread SendThread;
+	thread HeartBeatThread;
 	char sendbuf[MESGSIZE];
+	ClientState state;
+	int heartInterval;
 };
 #endif
