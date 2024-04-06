@@ -46,7 +46,8 @@ void ServerStart::Start() {
     //}
     Log::Info("服务器开启成功等待客户端连接！");
     //Log::Info("服务器IP : ", addrServer);
-    Log::Info("服务器端口号 ： ", addrServer.sin_port);
+    //Log::Info("服务器端口号 ： ", addrServer.sin_port);
+    Log::Info("服务器端口号 ： ", port);
 
     SOCKADDR_IN addrClient;
     int len = sizeof(SOCKADDR);

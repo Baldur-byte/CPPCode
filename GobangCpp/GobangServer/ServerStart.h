@@ -4,7 +4,6 @@
 #include "Log.h"
 
 #define PORT 4444
-#define MESGSIZE 1024
 #pragma comment(lib, "ws2_32.lib")
 
 class ServerStart {

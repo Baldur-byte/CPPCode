@@ -3,21 +3,20 @@
 
 GameStart::GameStart() {
     drawParam = BoardDrawParam(20, 1, 4, 2, 3, 100);
-    //curGame = Game();
 }
 
 GameStart::~GameStart() {
-
+    closegraph();
 }
 
-void GameStart::Start() {
+void GameStart::Start(mutex* mtx) {
+    this->mtx = mtx;
+
     Draw();
 
-    curGame.Start();
+    curGame.Start(this);
 
     StartListen();
-
-    closegraph();
 }
 
 
@@ -36,19 +35,22 @@ void GameStart::Click(int x, int y) {
         return;
     }
     curGame.Click(pos_x, pos_y);
-    DrawChess();
+    //DrawChess();
 }
 
 void GameStart::DrawBoardFrame() {
+    mtx->lock();
     setlinecolor(BLACK);
     setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, drawParam.frameThickness);
     line(drawParam.left, drawParam.top, drawParam.right - drawParam.frameThickness / 2, drawParam.top);
     line(drawParam.right, drawParam.top, drawParam.right, drawParam.bottom - drawParam.frameThickness / 2);
     line(drawParam.right, drawParam.bottom, drawParam.left + drawParam.frameThickness / 2, drawParam.bottom);
     line(drawParam.left, drawParam.bottom, drawParam.left, drawParam.top + drawParam.frameThickness / 2);
+    mtx->unlock();
 }
 
 void GameStart::DrawChessBoard() {
+    mtx->lock();
     setlinecolor(BLACK);
     setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, drawParam.lineThickness);
 
@@ -56,9 +58,11 @@ void GameStart::DrawChessBoard() {
         line(drawParam.badgeLeft, drawParam.badgeTop + drawParam.dis * i, drawParam.badgeRight, drawParam.badgeTop + drawParam.dis * i);
         line(drawParam.badgeLeft + drawParam.dis * i, drawParam.badgeTop, drawParam.badgeLeft + drawParam.dis * i, drawParam.badgeBottom);
     }
+    mtx->unlock();
 }
 
 void GameStart::DrawChess() {
+    mtx->lock();
     ChessBoardCell** data = curGame.GetChessBoardData();
 
     for (int i = 0; i < 15; i++) {
@@ -70,15 +74,15 @@ void GameStart::DrawChess() {
                 solidcircle(drawParam.badgeLeft + drawParam.dis * i, drawParam.badgeTop + drawParam.dis * j, drawParam.radius);
                 break;
             case CellType::White:
-                break;
                 setfillcolor(WHITE);
                 solidcircle(drawParam.badgeLeft + drawParam.dis * i, drawParam.badgeTop + drawParam.dis * j, drawParam.radius);
+                break;
             default:
                 break;
             }
         }
     }
-
+    mtx->unlock();
     /*for (int i = 0; i < 15; i++) {
         delete[] data[i];
     }
@@ -86,9 +90,11 @@ void GameStart::DrawChess() {
 }
 
 void GameStart::Draw() {
+    mtx->lock();
     initgraph(drawParam.screenWidth, drawParam.screenHeight);
     setfillcolor(LIGHTGRAY);
     floodfill(0, 0, BLACK, 1);
+    mtx->unlock();
 
     DrawBoardFrame();
     DrawChessBoard();
@@ -107,5 +113,13 @@ void GameStart::StartListen() {
             break;
         }
     }
+}
 
+void GameStart::ShowMessage(const char* text) {
+    //settextcolor(BLACK);
+    RECT r = { 0, 0, drawParam.screenWidth, drawParam.titleHeight };
+    size_t blen = MultiByteToWideChar(CP_ACP, 0, text, strlen(text) + 1, 0, 0);
+    wchar_t* buffer = new wchar_t[blen];
+    MultiByteToWideChar(CP_ACP, 0, text, strlen(text) + 1, buffer, blen);
+    drawtext(buffer, &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 }

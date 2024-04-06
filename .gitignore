@@ -11,3 +11,15 @@ GobangCpp/GobangClient/.vs/GobangClient/v17/
 *.vsidx
 
 GobangCpp/GobangClient/.vs/GobangClient/FileContentIndex/
+
+GobangCpp/GobangClient/.vs/
+
+GobangCpp/GobangClient/x64/
+
+GobangCpp/GobangProtocol/.vs/
+
+GobangCpp/GobangProtocol/x64/
+
+GobangCpp/GobangServer/.vs/
+
+GobangCpp/GobangServer/x64/

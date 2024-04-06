@@ -26,17 +26,21 @@ struct ChessBoardCell {
     }
 };
 
+class GameStart;
+
 class Game {
 public:
     Game();
     ~Game();
-    void Start();
+    void Start(GameStart* gameStart);
     void ChangePlayer();
     bool IsFinished();
     void Click(int x, int y);
+    void SetChessBoardData(short(*chessBoard)[15]);
     ChessBoardCell** GetChessBoardData();
+    void SetGameResult(int result);
 private:
-    bool isTurn;
+    GameStart* gameStart;
     Player player;
     ChessBoardCell chessBoard[15][15];
 

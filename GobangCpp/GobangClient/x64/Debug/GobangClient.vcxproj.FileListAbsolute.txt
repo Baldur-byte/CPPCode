@@ -1,1 +1,0 @@
-D:\Workspace\cppcode\GobangCpp\GobangClient\x64\Debug\GobangClient.exe

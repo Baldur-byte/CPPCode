@@ -1,5 +1,6 @@
 #pragma once
 #include "Game.h"
+#include <mutex>
 
 struct BoardDrawParam {
     int gridWidth;
@@ -57,14 +58,16 @@ class GameStart {
 public:
     GameStart();
     ~GameStart();
-    void Start();
+    void Start(mutex* mtx);
+    void Draw();
+    void DrawChess();
+    void ShowMessage(const char* text);
 private:
     void DrawBoardFrame();
     void DrawChessBoard();
-    void DrawChess();
-    void Draw();
     void StartListen();
     void Click(int x, int y);
     Game curGame;
     BoardDrawParam drawParam;
+    mutex* mtx;
 };
