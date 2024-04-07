@@ -14,7 +14,8 @@ void GameStart::Start(mutex* mtx) {
 
     Draw();
 
-    curGame.Start(this);
+    curGame.Enter(this);
+    curGame.Start();
 
     StartListen();
 }
@@ -103,12 +104,25 @@ void GameStart::Draw() {
 void GameStart::StartListen() {
     ExMessage m;
     while (true) {
-        m = getmessage(EX_MOUSE | EX_KEY);
+        m = getmessage(EX_MOUSE | EX_KEY | EX_WINDOW);
         switch (m.message)
         {
         case WM_LBUTTONDOWN:
             Click(m.x, m.y);
             break;
+        case WM_KEYDOWN:
+            if (m.vkcode == VK_ESCAPE) {
+                curGame.Quit();
+                return;
+            }
+            break;
+        case WM_ACTIVATE:
+            if (m.wParam == 0) {
+
+            }
+            if (m.lParam == 0) {
+
+            }
         default:
             break;
         }

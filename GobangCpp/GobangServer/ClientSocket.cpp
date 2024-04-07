@@ -156,6 +156,8 @@ void ClientSocket::TimePass() {
 void ClientSocket::CloseSocket() {
     Log::Info("客户端断开连接 : ", id);
     state = ClientState::DisConnected;
-
+    if (player.isInRoom) {
+        serverLogic->ExitRoom(&player);
+    }
     closesocket(socketClient);
 }

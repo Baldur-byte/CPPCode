@@ -21,12 +21,14 @@ void ServerLogic::AddClient(SOCKADDR_IN addr, SOCKET socket) {
 }
 
 bool ServerLogic::JoinRoom(Player* player) {
-    if (rooms[0].isFull()) {
-        return false;
+    for (int i = 0; i < 20; i++) {
+        if (!rooms[i].isFull()) {
+            player->JoinRoom(&rooms[i]);
+            rooms[i].AddPlayer(player);
+            return true;
+        }
     }
-    player->JoinRoom(&rooms[0]);
-    rooms[0].AddPlayer(player);
-    return true;
+    return false;
 }
 
 bool ServerLogic::ExitRoom(Player* player) {

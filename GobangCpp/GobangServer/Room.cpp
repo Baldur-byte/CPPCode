@@ -55,14 +55,14 @@ bool Room::RemovePlayer(Player* player) {
         }
     }
     if (!isFound){
-        mtx.unlock();
         Log::Info("玩家不在当前房间，无法退出，当前房间人数 ：", playerCount);
+        mtx.unlock();
         return false;
     }
     else {
         playerCount--;
-        mtx.unlock();
         Log::Info("玩家退出房间，当前房间人数 ：", playerCount);
+        mtx.unlock();
         return true;
     }
 }

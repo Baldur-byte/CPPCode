@@ -13,8 +13,11 @@ Game::~Game() {
 
 }
 
-void Game::Start(GameStart* gameStart) {
+void Game::Enter(GameStart* gameStart) {
     this->gameStart = gameStart;
+}
+
+void Game::Start() {
     player.JoinGame(this);
 }
 
@@ -83,4 +86,8 @@ void Game::SetGameResult(int result) {
     else {
         gameStart->ShowMessage("π ’œ");
     }
+}
+
+void Game::Quit() {
+
 }

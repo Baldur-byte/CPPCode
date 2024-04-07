@@ -32,13 +32,15 @@ class Game {
 public:
     Game();
     ~Game();
-    void Start(GameStart* gameStart);
+    void Enter(GameStart* gameStart);
+    void Start();
     void ChangePlayer();
     bool IsFinished();
     void Click(int x, int y);
     void SetChessBoardData(short(*chessBoard)[15]);
     ChessBoardCell** GetChessBoardData();
     void SetGameResult(int result);
+    void Quit();
 private:
     GameStart* gameStart;
     Player player;

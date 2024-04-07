@@ -13,6 +13,6 @@ public:
     bool ExitRoom(Player* player);
 private:
     ClientSocket clientSockets[100];
-    Room rooms[1];
+    Room rooms[20];
     int clientSocketCount;
 };
