@@ -17,10 +17,6 @@ void GameStart::Start(mutex* mtx) {
     MainLoop();
 }
 
-void GameStart::Draw() {
-    initgraph(drawParam.screenWidth, drawParam.screenHeight);
-}
-
 void GameStart::DrawStartUI() {
     mtx->lock();
     setfillcolor(LIGHTGRAY);
@@ -68,22 +64,37 @@ void GameStart::DrawGameUI() {
 
     // 开始游戏  重新开始  添加机器人  返回大厅  退出游戏
 
-    int buttonWith = 100;
-    int buttonHeight = 45;
-    int halfspace = 10;
+    int buttonWith = 70;
+    int buttonHeight = 22;
+    int halfspace = 3;
 
-    AddButton(drawParam.screenWidth / 2 - buttonWith * 2 - halfspace * 3, 2 * halfspace, buttonWith, buttonHeight, "重新开始", [](Game* curGame) {
+#pragma region 第一行按钮
+    AddButton(drawParam.screenWidth / 2 - buttonWith * 2 - halfspace * 3, halfspace, buttonWith, buttonHeight, "准备开始", [](Game* curGame) {
         curGame->Restart();
         });
-    AddButton(drawParam.screenWidth / 2 - buttonWith - halfspace, 2 * halfspace, buttonWith, buttonHeight, "添加机器人", [](Game* curGame) {
+
+    AddButton(drawParam.screenWidth / 2 - buttonWith - halfspace, halfspace, buttonWith, buttonHeight, "重新开始", [](Game* curGame) {
+        curGame->Restart();
+        });
+    AddButton(drawParam.screenWidth / 2 + halfspace, halfspace, buttonWith, buttonHeight, "添加机器人", [](Game* curGame) {
         curGame->AddNetworkRobot();
         });
-    AddButton(drawParam.screenWidth / 2 + halfspace, 2 * halfspace, buttonWith, buttonHeight, "返回大厅", [](Game* curGame) {
+    AddButton(drawParam.screenWidth / 2 + buttonWith + halfspace * 3, halfspace, buttonWith, buttonHeight, "返回大厅", [](Game* curGame) {
         curGame->QuitToLobby();
         });
-    AddButton(drawParam.screenWidth / 2 + buttonWith + halfspace * 2, 2 * halfspace, buttonWith, buttonHeight, "退出游戏", [](Game* curGame) {
+#pragma endregion
+
+#pragma region 第二行按钮
+    AddButton(drawParam.screenWidth / 2 - buttonWith * 2 - halfspace * 3, buttonHeight + halfspace * 3, buttonWith, buttonHeight, "退出游戏", [](Game* curGame) {
         curGame->QuitToStart();
         });
+    AddButton(drawParam.screenWidth / 2 - buttonWith - halfspace, buttonHeight + halfspace * 3, buttonWith, buttonHeight, "空按钮1", [](Game* curGame) {
+        });
+    AddButton(drawParam.screenWidth / 2 + halfspace, buttonHeight + halfspace * 3, buttonWith, buttonHeight, "添空按钮2", [](Game* curGame) {
+        });
+    AddButton(drawParam.screenWidth / 2 + buttonWith + halfspace * 3, buttonHeight + halfspace * 3, buttonWith, buttonHeight, "空按钮3", [](Game* curGame) {
+        });
+#pragma endregion
 
     DrawButtons();
     DrawBoardFrame();
@@ -148,10 +159,10 @@ void GameStart::RemoveAllButton() {
 void GameStart::ShowMessage(const char* text) {
     mtx->lock();
     setfillcolor(LIGHTGRAY);
-    solidrectangle(0, 50, drawParam.screenWidth, 50);
+    solidrectangle(0, 53, drawParam.screenWidth, 40);
     mtx->unlock();
     //settextcolor(BLACK);
-    RECT r = { 0, 50, drawParam.screenWidth, 50 };
+    RECT r = { 0, 53, drawParam.screenWidth, 40 };
     size_t blen = MultiByteToWideChar(CP_ACP, 0, text, strlen(text) + 1, 0, 0);
     wchar_t* buffer = new wchar_t[blen];
     MultiByteToWideChar(CP_ACP, 0, text, strlen(text) + 1, buffer, blen);

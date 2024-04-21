@@ -1,7 +1,7 @@
 #pragma once
 #include "Player.h"
 #include "Robot.h"
-#include "Room.h"
+#include "ChessBoard.h"
 
 //enum class CellType {
 //    None,
@@ -37,9 +37,9 @@ public:
     void Enter(GameStart* gameStart);
     void Start();
     void Click(int x, int y);
-    void SetChessBoardData(short(*chessBoard)[15]);
+    //void SetChessBoardData(short(*chessBoard)[15]);
     ChessBoardCell** GetChessBoardData();
-    void SetGameResult(int result);
+    //void SetGameResult(int result);
     void Quit();
 
     void Restart();
@@ -50,6 +50,6 @@ private:
     GameStart* gameStart;
     Player player;
     Robot robot;
-    Room room;
-    ChessBoardCell chessBoard[15][15];
+    ChessBoard chessBoard;
+    //ChessBoardCell chessBoard[15][15];
 };

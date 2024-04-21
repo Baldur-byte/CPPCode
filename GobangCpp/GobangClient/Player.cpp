@@ -5,7 +5,7 @@ Player::Player() {
     chessType = ChessType::None;
     clientSocket.Start(this);
     isTurn = false;
-    room = nullptr;
+    chessBoard = nullptr;
 }
 
 Player::~Player() {
@@ -16,8 +16,8 @@ ChessType Player::GetChessType() {
     return chessType;
 }
 
-void Player::JoinRoom(Room* room) {
-    this->room = room;
+void Player::JoinRoom(ChessBoard* chessBoard) {
+    this->chessBoard = chessBoard;
     JoinRoom_Message message;
     clientSocket.Send(CSMessageType::JoinRoom, &message, sizeof(JoinRoom_Message));
 }
@@ -37,8 +37,8 @@ void Player::PlaceChess(int x, int y)
     isTurn = false;
 }
 
-void Player::UpdateChessBoard(short(*chessBoard)[15]) {
-    room->SetChessBoardData(chessBoard);
+void Player::UpdateChessBoard(short(*chessBoardData)[15]) {
+    this->chessBoard->SetChessBoardData(chessBoardData);
 }
 
 void Player::Change(ChessType turn) {
@@ -46,5 +46,5 @@ void Player::Change(ChessType turn) {
 }
 
 void Player::GameFinish(int win) {
-    room->SetGameResult(win);
+    chessBoard->SetGameResult(win);
 }

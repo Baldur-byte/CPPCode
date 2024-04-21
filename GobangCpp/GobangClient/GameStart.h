@@ -60,7 +60,6 @@ public:
     GameStart();
     ~GameStart();
     void Start(mutex* mtx);
-    void Draw();
     void DrawStartUI();
     void DrawLobbyUI();
     void DrawGameUI();

@@ -2,11 +2,11 @@
 #include "GameStart.h"
 
 Game::Game() {
-    for (int i = 0; i < 15; i++) {
+    /*for (int i = 0; i < 15; i++) {
         for (int j = 0; j < 15; j++) {
             chessBoard[i][j] = ChessBoardCell(i, j);
         }
-    }
+    }*/
     gameStart = nullptr;
 }
 
@@ -19,7 +19,7 @@ void Game::Enter(GameStart* gameStart) {
 }
 
 void Game::Start() {
-    player.JoinRoom(&room);
+    player.JoinRoom(&chessBoard);
     gameStart->ChangePage(2);
 }
 
@@ -28,14 +28,14 @@ void Game::Click(int x, int y) {
     {
         return;
     }
-    if (chessBoard[x][y].cellType != CellType::Empty) {
+    if (chessBoard.CheckPosIsEmpty(x, y)) {
         return;
     }
     player.PlaceChess(x, y);
 }
 
 ChessBoardCell** Game::GetChessBoardData() {
-    return room.GetChessBoardData();
+    return chessBoard.GetChessBoardData();
 }
 
 //void Game::SetChessBoardData(short(*chessBoard)[15]) {

@@ -1,7 +1,7 @@
 #pragma once
 #include "ClientSocket.h"
 
-class Room;
+class ChessBoard;
 
 enum class ChessType {
     None,
@@ -14,7 +14,7 @@ public:
     Player();
     ~Player();
     ChessType GetChessType();
-    void JoinRoom(Room* room);
+    void JoinRoom(ChessBoard* room);
     virtual void SetChessType(ChessType type, ChessType turn);
     virtual void PlaceChess(int x, int y);
     virtual void UpdateChessBoard(short(*chessBoard)[15]);
@@ -25,5 +25,5 @@ protected:
     ChessType chessType;
     ClientSocket clientSocket;
 private:
-    Room* room;
+    ChessBoard* chessBoard;
 };

@@ -1,14 +1,14 @@
-#include "Room.h"
+#include "ChessBoard.h"
 
-Room::Room() {
-
-}
-
-Room::~Room() {
+ChessBoard::ChessBoard() {
 
 }
 
-void Room::ResetRoom() {
+ChessBoard::~ChessBoard() {
+
+}
+
+void ChessBoard::ResetChessBoard() {
     for (int i = 0; i < 15; i++) {
         for (int j = 0; j < 15; j++) {
             chessBoard[i][j] = ChessBoardCell(i, j);
@@ -16,7 +16,7 @@ void Room::ResetRoom() {
     }
 }
 
-void Room::SetChessBoardData(short(*chessBoard)[15]) {
+void ChessBoard::SetChessBoardData(short(*chessBoard)[15]) {
     for (int i = 0; i < 15; i++) {
         for (int j = 0; j < 15; j++) {
             this->chessBoard[i][j].cellType = static_cast<CellType>(chessBoard[i][j]);
@@ -24,7 +24,7 @@ void Room::SetChessBoardData(short(*chessBoard)[15]) {
     }
 }
 
-ChessBoardCell** Room::GetChessBoardData() {
+ChessBoardCell** ChessBoard::GetChessBoardData() {
     ChessBoardCell** result = new ChessBoardCell * [15];
     for (int i = 0; i < 15; i++) {
         result[i] = chessBoard[i];
@@ -32,8 +32,14 @@ ChessBoardCell** Room::GetChessBoardData() {
     return result;
 }
 
+bool ChessBoard::CheckPosIsEmpty(int x, int y) {
+    if (chessBoard[x][y].cellType != CellType::Empty) {
+        return false;
+    }
+    return true;
+}
 
-void Room::SetGameResult(int result) {
+void ChessBoard::SetGameResult(int result) {
     if (result == 1) {
         //gameStart->ShowMessage("ƒ„”Æ¡À");
     }
