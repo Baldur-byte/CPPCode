@@ -4,7 +4,9 @@
 #include <thread>
 #include "IMessage.h"
 
+//#define SERVER_ADDRESS "115.236.153.177"
 #define SERVER_ADDRESS "127.0.0.1"
+//#define PORT 22965
 #define PORT 8888
 #define MESGSIZE 1024
 #pragma comment(lib, "ws2_32.lib")

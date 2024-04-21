@@ -3,7 +3,6 @@
 #include "GameStart.h"
 #include <mutex>
 #include <easyx.h>
-#include "Robot.h"
 
 using namespace std;
 
@@ -19,7 +18,5 @@ int main() {
 
     thread t1(ExcuteT, &app1);
     //thread t2(ExcuteT, &app2);
-    Robot r1;
-    r1.JoinGame();
     getchar();
 }
