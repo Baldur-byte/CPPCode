@@ -26,13 +26,13 @@ class Game;
 class Button {
 public:
     Button();
-    void SetData(int x, int y, int width, int height, const char* text, void (*action)(Game*));
+    void SetData(int x, int y, int width, int height, const char* text, void (*action)(Game*, int));
     const char* GetText();
     // BindEvent();
-    bool TryTrigger(int x, int y, Game*);
+    bool TryTrigger(int x, int y, Game*, int param);
     Rect rect;
 private:
     char text[20];
-    void(*clickEvent) (Game*);
+    void(*clickEvent) (Game*, int);
     std::map<BUTTON_MSG, void(*)()> eventMap;
 };

@@ -69,6 +69,9 @@ void ClientSocket::Receive(MessagePack* message) {
     case SCMessageType::PlayerInfo:
         break;
     case SCMessageType::RoomList:
+        RoomList_Message roomList_Data;
+        memcpy(&roomList_Data, message->content, sizeof(UpdateChessBoard_Message));
+        player->SetRoomList(roomList_Data.roomList);
         break;
     case SCMessageType::RoomInfo:
         break;
@@ -78,6 +81,13 @@ void ClientSocket::Receive(MessagePack* message) {
         player->UpdateChessBoard(updateChessBoard_Data.chessBoard);
         break;
     case SCMessageType::OperationResult:
+        OperationResult_Message operationResult_Date;
+        memcpy(&operationResult_Date, message->content, sizeof(OperationResult_Message));
+        CSMessageType mesageType;
+        mesageType = static_cast<CSMessageType>(operationResult_Date.messageType);
+        if (eventMap.count(mesageType) > 0) {
+            eventMap[mesageType](player->CurGame());
+        }
         break;
     case SCMessageType::GameStart:
         GameStart_Message gameStart_Data;
@@ -158,4 +168,12 @@ void ClientSocket::CloseSocket() {
     state = ClientState::DisConnected;
     closesocket(socketClient);
     WSACleanup();
+}
+
+void ClientSocket::RegistOperatorResultEvent(CSMessageType type, void (*action)(Game*)) {
+    eventMap.insert(std::make_pair(type, action));
+}
+
+void ClientSocket::UnregistOperatorResultEvent(CSMessageType type) {
+    eventMap.erase(type);
 }

@@ -2,6 +2,7 @@
 #include <winsock2.h>
 #include <queue>
 #include <thread>
+#include <map>
 #include "IMessage.h"
 
 //#define SERVER_ADDRESS "115.236.153.177"
@@ -14,6 +15,7 @@
 using namespace std;
 
 class Player;
+class Game;
 
 enum class ClientState {
     DisConnected = 0,
@@ -33,6 +35,10 @@ public:
     void CloseSocket();
     SOCKET socketClient;
     queue<MessagePack> queueToSend;
+
+    void RegistOperatorResultEvent(CSMessageType type, void (*action)(Game*));
+    void UnregistOperatorResultEvent(CSMessageType type);
+
 private:
     static void SendT(ClientSocket* client);
     static void ReceiveT(ClientSocket* client);
@@ -45,4 +51,6 @@ private:
     Player* player;
     ClientState state;
     int heartInterval;
+
+    std::map<CSMessageType, void(*)(Game*)> eventMap;
 };

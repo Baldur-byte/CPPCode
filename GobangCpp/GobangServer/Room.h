@@ -36,18 +36,24 @@ class Room {
 public:
     Room();
     ~Room();
+    void SetID(int id);
+    int ID();
+    int PlayerCount();
     bool isFull();
     bool AddPlayer(Player* player);
     bool RemovePlayer(Player* player);
+    void CheckState();
     void GameStart(ChessType turn);
     void PlaceChess(int x, int y, ChessType type);
     void GameOver();
     short** GetChessBoardData();
     ChessType turn;
 private:
+    int id;
     int CheckResult();
     ChessBoardCell chessBoard[15][15];
     Player* Players[2];
     int playerCount;
     mutex mtx;
+    ChessType FIRST_TO_PLACE = ChessType::Black;
 };

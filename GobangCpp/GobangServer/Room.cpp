@@ -1,6 +1,7 @@
 #include "Room.h"
 
 Room::Room() {
+    id = 0;
     playerCount = 0;
     turn = ChessType::None;
     for (int i = 0; i < 15; i++) {
@@ -14,6 +15,18 @@ Room::Room() {
 
 Room::~Room() {
 
+}
+
+void Room::SetID(int id) {
+    this->id = id;
+}
+
+int Room::ID() {
+    return id;
+}
+
+int Room::PlayerCount() {
+    return playerCount;
 }
 
 bool Room::isFull() {
@@ -33,7 +46,6 @@ bool Room::AddPlayer(Player* player) {
     }
     else if (playerCount == 2) {
         player->SetChessType(ChessType::White);
-        GameStart(ChessType::Black);
     }
     mtx.unlock();
     return true;
@@ -64,6 +76,12 @@ bool Room::RemovePlayer(Player* player) {
         Log::Info("玩家退出房间，当前房间人数 ：", playerCount);
         mtx.unlock();
         return true;
+    }
+}
+
+void Room::CheckState() {
+    if (playerCount == 2 && Players[0]->isReady && Players[1]->isReady) {
+        GameStart(FIRST_TO_PLACE);
     }
 }
 

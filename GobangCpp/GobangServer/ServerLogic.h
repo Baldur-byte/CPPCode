@@ -9,7 +9,8 @@ public:
     ServerLogic();
     ~ServerLogic();
     void AddClient(SOCKADDR_IN addr, SOCKET socket);
-    bool JoinRoom(Player* player);
+    Room** RoomList();
+    bool JoinRoom(int roomId, Player* player);
     bool ExitRoom(Player* player);
 private:
     ClientSocket clientSockets[100];

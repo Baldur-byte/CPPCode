@@ -8,6 +8,7 @@ Player::Player()
     this->clientSocket = nullptr;
     this->room = nullptr;
     this->isInRoom = false;
+    this->isReady = false;
 }
 
 Player::Player(ClientSocket* clientSocket)
@@ -16,14 +17,13 @@ Player::Player(ClientSocket* clientSocket)
     this->clientSocket = clientSocket;
     this->room = nullptr;
     this->isInRoom = false;
+    this->isReady = false;
 }
 
 Player::~Player()
 {
 }
 #pragma region Server->Client
-
-
 void Player::UpdateChessBoard() {
     UpdateChessBoard_Message message;
     short** chessboard = room->GetChessBoardData();
@@ -41,6 +41,7 @@ void Player::GameStart(ChessType type) {
     message.turn = type == this->chessType;
     clientSocket->Send(SCMessageType::GameStart, &message, sizeof(GameStart_Message));
 }
+
 void Player::ChangePlayer() {
     Change_Message message;
     message.chessType = static_cast<int>(room->turn);
@@ -61,6 +62,8 @@ void Player::GameFinish(int win) {
         }
     }
     clientSocket->Send(SCMessageType::GameFinish, &message, sizeof(GameFinish_Message));
+
+    this->isReady = false;
 }
 #pragma endregion
 
@@ -76,12 +79,16 @@ void Player::ExitRoom() {
     this->isInRoom = false;
 }
 
-void Player::StartGame() {
-
+void Player::ReadyToStartGame() {
+    this->isReady = true;
+    if (this->room->isFull()) {
+        this->room->CheckState();
+    }
 }
 
 void Player::QuitGame() {
     clientSocket->CloseSocket();
+    this->isReady = false;
 }
 #pragma endregion
 

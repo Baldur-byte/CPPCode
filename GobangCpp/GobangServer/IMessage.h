@@ -26,7 +26,7 @@ enum class CSMessageType {
     CreateRoom = 8,
     JoinRoom = 9,
     ExitRoom = 10,
-    StartGame = 11,
+    ReadyToStartGame = 11,
     QuitGame = 12,
     Update = 13,
 };
@@ -34,6 +34,7 @@ enum class CSMessageType {
 __interface IMessage
 {
 };
+
 #pragma region Server->Client
 struct HeartBeatSC_Message : IMessage
 {
@@ -52,7 +53,7 @@ struct PlayerInfo_Message : IMessage
 
 struct RoomList_Message : IMessage
 {
-    int roomList[];
+    int roomList[12][2]; //0  房间id   1  房间人数
 };
 
 struct RoomInfo_Message : IMessage
@@ -68,7 +69,8 @@ struct UpdateChessBoard_Message : IMessage
 
 struct OperationResult_Message : IMessage
 {
-    int result;
+    int messageType;
+    int result; // 0 成功  1 失败
 };
 
 struct GameStart_Message : IMessage {
@@ -133,7 +135,7 @@ struct ExitRoom_Message : IMessage
 {
 };
 
-struct StartGame_Message : IMessage
+struct ReadyToStartGame_Message : IMessage
 {
 };
 

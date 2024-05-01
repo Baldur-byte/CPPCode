@@ -1,16 +1,28 @@
 #include "Robot.h"
+#include "Game.h"
 
-Robot::Robot() : Player() {
+Robot::Robot(Game* game) : Player(game) {
 }
 
 Robot::~Robot(){
 }
 
-void Robot::JoinGame() {
+void Robot::JoinRoom() {
     JoinRoom_Message message;
+    message.roomId = this->CurGame()->RoomID();
     clientSocket.Send(CSMessageType::JoinRoom, &message, sizeof(JoinRoom_Message));
 }
 
+void Robot::ReadyToStartGame() {
+    ReadyToStartGame_Message message;
+    clientSocket.Send(CSMessageType::ReadyToStartGame, &message, sizeof(ReadyToStartGame_Message));
+
+    for (int i = 0; i < 15; i++) {
+        for (int j = 0; j < 15; j++) {
+            this->chessBoard[i][j] = chessBoard[i][j];
+        }
+    }
+}
 
 void Robot::SetChessType(ChessType type, ChessType turn) {
     this->chessType = type;

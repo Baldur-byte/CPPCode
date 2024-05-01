@@ -3,53 +3,39 @@
 #include "Robot.h"
 #include "ChessBoard.h"
 
-//enum class CellType {
-//    None,
-//    Empty,
-//    Black,
-//    White,
-//};
-//
-//struct ChessBoardCell {
-//    int x;
-//    int y;
-//    CellType cellType;
-//
-//    ChessBoardCell() {
-//        this->x = -1;
-//        this->y = -1;
-//        this->cellType = CellType::None;
-//    }
-//
-//    ChessBoardCell(int x, int y) {
-//        this->x = x;
-//        this->y = y;
-//        this->cellType = CellType::Empty;
-//    }
-//};
-
 class GameStart;
 
 class Game {
 public:
     Game();
     ~Game();
-    void Enter(GameStart* gameStart);
-    void Start();
-    void Click(int x, int y);
-    //void SetChessBoardData(short(*chessBoard)[15]);
+    void Init(GameStart* gameStart);
+    void JoinRoom(int roomId);
+    int RoomID();
+    void ReadToStart();
+    void ClickChessBoard(int x, int y);
+    void UpdateChessBoard();
     ChessBoardCell** GetChessBoardData();
     //void SetGameResult(int result);
+
+    void GoToLobby();
+    void GoToGame();
     void Quit();
+
+    void GetRoomList();
+    void ReceiveRoomList(int(*roomList)[2]);
+    int** RoomList();
 
     void Restart();
     void AddNetworkRobot();
     void QuitToLobby();
     void QuitToStart();
+
 private:
     GameStart* gameStart;
     Player player;
     Robot robot;
     ChessBoard chessBoard;
+    int roomList[12][2];
     //ChessBoardCell chessBoard[15][15];
 };

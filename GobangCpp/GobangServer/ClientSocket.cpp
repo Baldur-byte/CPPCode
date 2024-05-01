@@ -111,6 +111,16 @@ void ClientSocket::Receive(MessagePack* message) {
     case CSMessageType::GetPlayerInfo:
         break;
     case CSMessageType::GetRoomList:
+        //GetRoomList_Message getRoomList_Data;
+        //memcpy(&getRoomList_Data, message->content, sizeof(PlaceChessCS_Message));
+        //player.GetRoom()->PlaceChess(static_cast<int>(placeChessCS_Data.x), static_cast<int>(placeChessCS_Data.y), static_cast<ChessType>(placeChessCS_Data.chess));
+
+        RoomList_Message roomList_message;
+        for (int i = 0; i < 12; i++) {
+            roomList_message.roomList[i][0] = serverLogic->RoomList()[i]->ID();
+            roomList_message.roomList[i][1] = serverLogic->RoomList()[i]->PlayerCount();
+        }
+        Send(SCMessageType::RoomList, &roomList_message, sizeof(RoomList_Message));
         break;
     case CSMessageType::GetRoomInfo:
         break;
@@ -122,13 +132,19 @@ void ClientSocket::Receive(MessagePack* message) {
     case CSMessageType::CreateRoom:
         break;
     case CSMessageType::JoinRoom:
-        serverLogic->JoinRoom(&player);
+        JoinRoom_Message joinRoom_Data;
+        memcpy(&joinRoom_Data, message->content, sizeof(JoinRoom_Message));
+
+        OperationResult_Message operationResult_Message;
+        operationResult_Message.messageType = static_cast<int>(CSMessageType::JoinRoom);
+        operationResult_Message.result = serverLogic->JoinRoom(joinRoom_Data.roomId, &player) ? 0 : 1;
+        Send(SCMessageType::OperationResult, &operationResult_Message, sizeof(OperationResult_Message));
         break;
     case CSMessageType::ExitRoom:
         serverLogic->ExitRoom(&player);
         break;
-    case CSMessageType::StartGame:
-        //player.StartGame();
+    case CSMessageType::ReadyToStartGame:
+        player.ReadyToStartGame();
         break;
     case CSMessageType::QuitGame:
         break;

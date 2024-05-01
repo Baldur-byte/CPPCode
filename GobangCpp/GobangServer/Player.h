@@ -25,7 +25,7 @@ public:
 #pragma region Client->Server
 	void JoinRoom(Room* room);
 	void ExitRoom();
-	void StartGame();
+	void ReadyToStartGame();
 	void QuitGame();
 #pragma endregion
 
@@ -33,7 +33,7 @@ public:
 	Room* GetRoom();
 
 	bool isInRoom;
-
+	bool isReady;
 private:
 	ClientSocket* clientSocket;
 	ChessType chessType;

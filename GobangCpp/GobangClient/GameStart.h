@@ -64,21 +64,25 @@ public:
     void DrawLobbyUI();
     void DrawGameUI();
     void DrawChess();
-    void DrawButtons();
-    void AddButton(int x, int y, int width, int height, const char* text, void (*action)(Game*));
+    void AddButton(int x, int y, int width, int height, const char* text, void (*action)(Game*, int));
     void RemoveAllButton();
     void ShowMessage(const char* text);
     void ChangePage(int page);
 private:
     void MainLoop();
+    void DrawButtons();
+    void DrawRooms();
     void DrawBoardFrame();
     void DrawChessBoard();
     void Click(int x, int y);
+
     Game curGame;
     BoardDrawParam drawParam;
     mutex* mtx;
-    Button buttons[10];
+    Button buttons[20];
     int buttonIndex = 0;
     int curPage = 0; // 0  开始界面   1  房间选择   2  游戏界面
     bool isRunning;
+
+    void(*refreshPages[5]) (GameStart*);
 };

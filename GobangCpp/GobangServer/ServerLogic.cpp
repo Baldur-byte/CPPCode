@@ -2,6 +2,9 @@
 
 ServerLogic::ServerLogic() {
     clientSocketCount = 0;
+    for (int i = 0; i < 20; i++) {
+        rooms[i].SetID(100 + i + 1);
+    }
 }
 
 ServerLogic::~ServerLogic() {
@@ -20,9 +23,17 @@ void ServerLogic::AddClient(SOCKADDR_IN addr, SOCKET socket) {
     clientSocketCount++;
 }
 
-bool ServerLogic::JoinRoom(Player* player) {
+Room** ServerLogic::RoomList() {
+    Room** result = new Room*[20];
     for (int i = 0; i < 20; i++) {
-        if (!rooms[i].isFull()) {
+        result[i] = &rooms[i];
+    }
+    return result;
+}
+
+bool ServerLogic::JoinRoom(int roomId, Player* player) {
+    for (int i = 0; i < 20; i++) {
+        if (rooms[i].ID() == roomId && !rooms[i].isFull()) {
             player->JoinRoom(&rooms[i]);
             rooms[i].AddPlayer(player);
             return true;
