@@ -160,12 +160,16 @@ void GameStart::DrawChess(int lastPos_x, int lastPos_y) {
             switch (data[i][j].cellType)
             {
             case CellType::Black:
+                setlinecolor(BLACK);
+                setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, drawParam.lineThickness);
                 setfillcolor(BLACK);
-                solidcircle(drawParam.badgeLeft + drawParam.dis * i, drawParam.badgeTop + drawParam.dis * j, drawParam.radius);
+                fillcircle(drawParam.badgeLeft + drawParam.dis * i, drawParam.badgeTop + drawParam.dis * j, drawParam.radius);
                 break;
             case CellType::White:
+                setlinecolor(WHITE);
+                setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, drawParam.lineThickness);
                 setfillcolor(WHITE);
-                solidcircle(drawParam.badgeLeft + drawParam.dis * i, drawParam.badgeTop + drawParam.dis * j, drawParam.radius);
+                fillcircle(drawParam.badgeLeft + drawParam.dis * i, drawParam.badgeTop + drawParam.dis * j, drawParam.radius);
                 break;
             default:
                 break;
@@ -173,7 +177,7 @@ void GameStart::DrawChess(int lastPos_x, int lastPos_y) {
             if (i == lastPos_x && j == lastPos_y) {
                 setlinecolor(RED);
                 setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, drawParam.lineThickness);
-                circle(drawParam.badgeLeft + drawParam.dis * i, drawParam.badgeTop + drawParam.dis * j, drawParam.radius - drawParam.lineThickness);
+                circle(drawParam.badgeLeft + drawParam.dis * i, drawParam.badgeTop + drawParam.dis * j, drawParam.radius);
             }
         }
     }
