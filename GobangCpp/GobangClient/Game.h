@@ -15,7 +15,7 @@ public:
     void ReadyToStart();
     void ResetChessBoard();
     void ClickChessBoard(int x, int y);
-    void UpdateChessBoard();
+    void UpdateChessBoard(int x, int y);
     ChessBoardCell** GetChessBoardData();
 
     void ShowResult(int result);

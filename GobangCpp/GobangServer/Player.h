@@ -16,7 +16,7 @@ public:
 	Player(ClientSocket* clientSocket);
 	~Player();
 #pragma region Server->Client
-	void UpdateChessBoard();
+	void UpdateChessBoard(int x, int y);
 	void GameStart(ChessType type);
 	void ChangePlayer();
 	void GameFinish(int win);

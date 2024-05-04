@@ -28,7 +28,7 @@ public:
     virtual void SetChessType(ChessType type, ChessType turn);
     virtual void GameStart();
     virtual void PlaceChess(int x, int y);
-    virtual void UpdateChessBoard(short(*chessBoard)[15]);
+    virtual void UpdateChessBoard(short(*chessBoard)[15], int x, int y);
     virtual void Change(ChessType turn);
     virtual void GameFinish(int win);
     virtual void RestartGameRequest();

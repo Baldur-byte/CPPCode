@@ -1,4 +1,4 @@
-#include "GameStart.h"
+﻿#include "GameStart.h"
 #include <easyx.h>
 
 GameStart::GameStart() {
@@ -151,7 +151,7 @@ void GameStart::DrawChessBoard() {
     mtx->unlock();
 }
 
-void GameStart::DrawChess() {
+void GameStart::DrawChess(int lastPos_x, int lastPos_y) {
     mtx->lock();
     ChessBoardCell** data = curGame.GetChessBoardData();
 
@@ -169,6 +169,11 @@ void GameStart::DrawChess() {
                 break;
             default:
                 break;
+            }
+            if (i == lastPos_x && j == lastPos_y) {
+                setlinecolor(RED);
+                setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, drawParam.lineThickness);
+                circle(drawParam.badgeLeft + drawParam.dis * i, drawParam.badgeTop + drawParam.dis * j, drawParam.radius - drawParam.lineThickness);
             }
         }
     }
@@ -283,6 +288,8 @@ void GameStart::DrawButtons() {
         Rect rect = buttons[i].rect;
         const char* text = buttons[i].GetText();
         mtx->lock();
+        setlinecolor(BLACK);
+        setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, drawParam.lineThickness);
         setfillcolor(LIGHTGRAY);
         fillroundrect(rect.x, rect.y, rect.x + rect.width, rect.y + rect.height, 3, 3);
         RECT r = { rect.x, rect.y, rect.x + rect.width, rect.y + rect.height };

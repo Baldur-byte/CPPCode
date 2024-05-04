@@ -26,7 +26,7 @@ Player::~Player()
 {
 }
 #pragma region Server->Client
-void Player::UpdateChessBoard() {
+void Player::UpdateChessBoard(int x, int y) {
     UpdateChessBoard_Message message;
     short** chessboard = room->GetChessBoardData();
     for (int i = 0; i < 15; i++) {
@@ -34,6 +34,8 @@ void Player::UpdateChessBoard() {
             message.chessBoard[i][j] = chessboard[i][j];
         }
     }
+    message.lastPos_x = x;
+    message.lastPos_y = y;
     clientSocket->Send(SCMessageType::UpdateChessBoard, &message, sizeof(UpdateChessBoard_Message));
 }
 

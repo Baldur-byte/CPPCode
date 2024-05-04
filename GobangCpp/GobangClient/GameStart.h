@@ -65,7 +65,7 @@ public:
     void DrawGameUI();
     void DrawBoardFrame();
     void DrawChessBoard();
-    void DrawChess();
+    void DrawChess(int x, int y);
     void AddButton(int x, int y, int width, int height, const char* text, void (*action)(Game*, int));
     void RemoveAllButton();
     void ShowMessage(const char* text);

@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include "Game.h"
 
 Player::Player(Game* game) {
@@ -89,9 +89,9 @@ void Player::PlaceChess(int x, int y) {
     isTurn = false;
 }
 
-void Player::UpdateChessBoard(short(*chessBoardData)[15]) {
+void Player::UpdateChessBoard(short(*chessBoardData)[15], int x, int y) {
     this->chessBoard->SetChessBoardData(chessBoardData);
-    curGame->UpdateChessBoard();
+    curGame->UpdateChessBoard(x, y);
 }
 
 void Player::Change(ChessType turn) {

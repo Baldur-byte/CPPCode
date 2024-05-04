@@ -1,7 +1,7 @@
 #pragma once
 #include <stdexcept>
-enum class SCMessageType
-{
+
+enum class SCMessageType {
     None = 0,
     HeartBeatSC = 1,
     CreatePlayerSC = 2,
@@ -16,8 +16,7 @@ enum class SCMessageType
     RestartConfirm = 11,
 };
 
-enum class CSMessageType
-{
+enum class CSMessageType {
     None = 0,
     HeartBeatCS = 1,
     CreatePlayerCS = 2,
@@ -35,45 +34,39 @@ enum class CSMessageType
     RestartRequest = 14,
 };
 
-__interface IMessage
-{
+__interface IMessage {
 };
 
 #pragma region Server->Client
-struct HeartBeatSC_Message : IMessage
-{
+struct HeartBeatSC_Message : IMessage {
     long long serverTime;
 };
 
-struct CreatePlayerSC_Message :IMessage
-{
+struct CreatePlayerSC_Message :IMessage {
     int playerId;
     char name[];
 };
 
-struct PlayerInfo_Message : IMessage
-{
+struct PlayerInfo_Message : IMessage {
     char name[];
 };
 
-struct RoomList_Message : IMessage
-{
+struct RoomList_Message : IMessage {
     short roomList[12][2]; //0  房间id   1  房间人数
 };
 
-struct RoomInfo_Message : IMessage
-{
+struct RoomInfo_Message : IMessage {
     int roomId;
     int playerIds[];
 };
 
-struct UpdateChessBoard_Message : IMessage
-{
+struct UpdateChessBoard_Message : IMessage {
+    int lastPos_x; //上一次落子的位置
+    int lastPos_y; //上一次落子的位置
     short chessBoard[15][15];
 };
 
-struct OperationResult_Message : IMessage
-{
+struct OperationResult_Message : IMessage {
     int messageType;
     int result; // 0 成功  1 失败
 };
@@ -87,87 +80,71 @@ struct Change_Message : IMessage {
     int chessType; //0 白色  1 黑色
 };
 
-struct GameFinish_Message : IMessage
-{
+struct GameFinish_Message : IMessage {
     int isWin;
 };
 
-struct RestartConfirm_Message : IMessage
-{
+struct RestartConfirm_Message : IMessage {
 };
 #pragma endregion
 
 #pragma region Client->Server
-struct HeartBeatCS_Message : IMessage
-{
+struct HeartBeatCS_Message : IMessage {
 };
 
-struct CreatePlayerCS_Message :IMessage
-{
+struct CreatePlayerCS_Message :IMessage {
 };
 
-struct UpdatePlayerInfo_Message : IMessage
-{
+struct UpdatePlayerInfo_Message : IMessage {
 };
 
-struct GetPlayerInfo_Message : IMessage
-{
+struct GetPlayerInfo_Message : IMessage {
     int playerId;
 };
 
-struct GetRoomList_Message : IMessage
-{
+struct GetRoomList_Message : IMessage {
 };
 
-struct GetRoomInfo_Message : IMessage
-{
+struct GetRoomInfo_Message : IMessage {
     int roomId;
 };
 
-struct PlaceChessCS_Message : IMessage
-{
+struct PlaceChessCS_Message : IMessage {
     short x;
     short y;
     short chess;
 };
 
-struct CreateRoom_Message : IMessage
-{
+struct CreateRoom_Message : IMessage {
     int roomId;
 };
 
-struct JoinRoom_Message : IMessage
-{
+struct JoinRoom_Message : IMessage {
     int roomId;
 };
 
-struct ExitRoom_Message : IMessage
-{
+struct ExitRoom_Message : IMessage {
 };
 
-struct ReadyToStartGame_Message : IMessage
-{
+struct ReadyToStartGame_Message : IMessage {
 };
 
-struct QuitGame_Message : IMessage
-{
+struct QuitGame_Message : IMessage {
 };
 
-struct Update_Message : IMessage
-{
+struct Update_Message : IMessage {
 };
 
-struct RestartRequest_Message : IMessage
-{
+struct RestartRequest_Message : IMessage {
 };
 #pragma endregion
 
-struct MessagePack
-{
+struct MessagePack {
     short len;
     short type;
     char content[1020];
 };
+
 //
 //
 //CSMessageType toCSMessageType(int value) {
@@ -206,3 +183,5 @@ struct MessagePack
 //    default: throw std::invalid_argument("Invalid color value");
 //    }
 //}
+
+//  房间内玩家比分    玩家的棋子颜色    上一个落子位置

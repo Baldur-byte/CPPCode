@@ -1,4 +1,4 @@
-#include "Room.h"
+﻿#include "Room.h"
 
 Room::Room() {
     id = 0;
@@ -102,7 +102,7 @@ void Room::PlaceChess(int x, int y, ChessType type) {
 
     }
     for (int i = 0; i < playerCount; i++) {
-        Players[i]->UpdateChessBoard();
+        Players[i]->UpdateChessBoard(x, y);
     }
 
     int win = CheckResult();
@@ -192,6 +192,7 @@ int Room::CheckResult() {
     int columns = CHESSBOARD_COLUMNS;
     set<int> canWinPoses;
     int preWin = 1;
+    int EmptyCount = 0;
 #pragma region 水平
     for (int i = 0; i < rows; i++) {
         bool isEmptyHead = false;
@@ -214,6 +215,8 @@ int Room::CheckResult() {
                 preChess = chessCount;
                 chessCount = 0;
                 isEmptyHead = true;
+
+                EmptyCount++;
             }
             else if (chessBoard[i][j].cellType == CellType::None) {
                 Log::Info("棋盘信息错误");
@@ -334,6 +337,9 @@ int Room::CheckResult() {
 #pragma endregion
     if (preWin && canWinPoses.size() >= 2) {
         result = 1;
+    }
+    else if (EmptyCount == 0) {
+        result = 0;
     }
     return result;
 }

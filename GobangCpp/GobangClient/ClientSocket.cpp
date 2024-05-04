@@ -79,7 +79,7 @@ void ClientSocket::Receive(MessagePack* message) {
     case SCMessageType::UpdateChessBoard:
         UpdateChessBoard_Message updateChessBoard_Data;
         memcpy(&updateChessBoard_Data, message->content, sizeof(UpdateChessBoard_Message));
-        player->UpdateChessBoard(updateChessBoard_Data.chessBoard);
+        player->UpdateChessBoard(updateChessBoard_Data.chessBoard, updateChessBoard_Data.lastPos_x, updateChessBoard_Data.lastPos_y);
         break;
     case SCMessageType::OperationResult:
         OperationResult_Message operationResult_Date;

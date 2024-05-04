@@ -1,4 +1,4 @@
-#include "Game.h"
+﻿#include "Game.h"
 #include "GameStart.h"
 
 Game::Game() : player(this), robot(this){
@@ -63,8 +63,8 @@ void Game::ClickChessBoard(int x, int y) {
     player.PlaceChess(x, y);
 }
 
-void Game::UpdateChessBoard() {
-    gameStart->DrawChess();
+void Game::UpdateChessBoard(int x, int y) {
+    gameStart->DrawChess(x, y);
 }
 
 ChessBoardCell** Game::GetChessBoardData() {

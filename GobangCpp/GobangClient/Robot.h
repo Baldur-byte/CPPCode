@@ -8,7 +8,7 @@ public:
     void ReadyToStartGame() override;
     void GameStart() override;
     void SetChessType(ChessType type, ChessType turn) override;
-    void UpdateChessBoard(short chessBoard[15][15]) override;
+    void UpdateChessBoard(short chessBoard[15][15], int x, int y) override;
     void Change(ChessType turn) override;
     void GameFinish(int win) override;
     void RestartGameRequest() override;

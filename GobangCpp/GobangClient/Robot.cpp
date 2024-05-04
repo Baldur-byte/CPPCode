@@ -40,7 +40,7 @@ void Robot::SetChessType(ChessType type, ChessType turn) {
     }
 }
 
-void Robot::UpdateChessBoard(short chessBoard[15][15]) {
+void Robot::UpdateChessBoard(short chessBoard[15][15], int x, int y) {
     for (int i = 0; i < 15; i++) {
         for (int j = 0; j < 15; j++) {
             this->chessBoard[i][j] = chessBoard[i][j];
