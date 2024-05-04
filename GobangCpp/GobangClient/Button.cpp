@@ -1,4 +1,4 @@
-#include "Button.h"
+﻿#include "Button.h"
 #include <stdexcept>
 
 Button::Button() : rect(0, 0, 0, 0){
