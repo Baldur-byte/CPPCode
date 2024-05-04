@@ -35,7 +35,7 @@ bool Room::AddPlayer(Player* player) {
     mtx.lock();
     Players[playerCount] = player;
     playerCount++;
-    Log::Info("Íæ¼Ò¼ÓÈë·¿¼ä£¬µ±Ç°·¿¼äÈËÊı £º", playerCount);
+    Log::Info("ç©å®¶åŠ å…¥æˆ¿é—´ï¼Œå½“å‰æˆ¿é—´äººæ•° ï¼š", playerCount);
     if (playerCount == 1) {
         player->SetChessType(ChessType::Black);
     }
@@ -62,13 +62,13 @@ bool Room::RemovePlayer(Player* player) {
         }
     }
     if (!isFound){
-        Log::Info("Íæ¼Ò²»ÔÚµ±Ç°·¿¼ä£¬ÎŞ·¨ÍË³ö£¬µ±Ç°·¿¼äÈËÊı £º", playerCount);
+        Log::Info("ç©å®¶ä¸åœ¨å½“å‰æˆ¿é—´ï¼Œæ— æ³•é€€å‡ºï¼Œå½“å‰æˆ¿é—´äººæ•° ï¼š", playerCount);
         mtx.unlock();
         return false;
     }
     else {
         playerCount--;
-        Log::Info("Íæ¼ÒÍË³ö·¿¼ä£¬µ±Ç°·¿¼äÈËÊı £º", playerCount);
+        Log::Info("ç©å®¶é€€å‡ºæˆ¿é—´ï¼Œå½“å‰æˆ¿é—´äººæ•° ï¼š", playerCount);
         mtx.unlock();
         return true;
     }
@@ -81,7 +81,7 @@ void Room::CheckState() {
 }
 
 void Room::GameStart(ChessType turn) {
-    Log::Info("ÓÎÏ·¿ªÊ¼ÁË");
+    Log::Info("æ¸¸æˆå¼€å§‹äº†");
     ResetChessBoard();
     this->turn = turn;
     for (int i = 0; i < playerCount; i++) {
@@ -91,11 +91,11 @@ void Room::GameStart(ChessType turn) {
 
 void Room::PlaceChess(int x, int y, ChessType type) {
     if (type == ChessType::Black) {
-        Log::Info("ºÚ×ÓÏÂÆå");
+        Log::Info("é»‘å­ä¸‹æ£‹");
         chessBoard[x][y].cellType = CellType::Black;
     }
     else if (type == ChessType::White) {
-        Log::Info("°××ÓÏÂÆå");
+        Log::Info("ç™½å­ä¸‹æ£‹");
         chessBoard[x][y].cellType = CellType::White;
     }
     else {
@@ -120,7 +120,7 @@ void Room::PlaceChess(int x, int y, ChessType type) {
             turn = ChessType::White;
         }
         else {
-            Log::Info("Æå¾ÖÔİÍ£");
+            Log::Info("æ£‹å±€æš‚åœ");
             turn = ChessType::None;
         }
         for (int i = 0; i < playerCount; i++) {
@@ -192,15 +192,16 @@ int Room::CheckResult() {
     int columns = CHESSBOARD_COLUMNS;
     set<int> canWinPoses;
     int preWin = 1;
-#pragma region Ë®Æ½
+#pragma region æ°´å¹³
     for (int i = 0; i < rows; i++) {
         bool isEmptyHead = false;
+        int preChess = 0;
         int chessCount = 0;
         for (int j = 0; j < columns; j++) {
             if (chessBoard[i][j].cellType == targetType) {
                 chessCount++;
-                if (chessCount == 4 && isEmptyHead) {
-                    canWinPoses.insert(i * 100 + (j - 4));
+                if ((chessCount == 4 || preChess + chessCount == 4) && isEmptyHead) {
+                    canWinPoses.insert(i * 100 + (j - chessCount));
                 }
                 else if (chessCount >= 5) {
                     return 1;
@@ -210,29 +211,32 @@ int Room::CheckResult() {
                 if (chessCount == 4) {
                     canWinPoses.insert(i * 100 + j);
                 }
+                preChess = chessCount;
                 chessCount = 0;
                 isEmptyHead = true;
             }
             else if (chessBoard[i][j].cellType == CellType::None) {
-                Log::Info("ÆåÅÌĞÅÏ¢´íÎó");
+                Log::Info("æ£‹ç›˜ä¿¡æ¯é”™è¯¯");
                 return -1;
             }
             else {
+                preChess = 0;
                 chessCount = 0;
                 isEmptyHead = false;
             }
         }
     }
 #pragma endregion
-#pragma region ´¹Ö±
+#pragma region å‚ç›´
     for (int j = 0; j < columns; j++) {
         bool isEmptyHead = false;
+        int preChess = 0;
         int chessCount = 0;
         for (int i = 0; i < rows; i++) {
             if (chessBoard[i][j].cellType == targetType) {
                 chessCount++;
-                if (chessCount == 4 && isEmptyHead) {
-                    canWinPoses.insert((i - 4) * 100 + j);
+                if ((chessCount == 4 || preChess + chessCount == 4) && isEmptyHead) {
+                    canWinPoses.insert((i - chessCount) * 100 + j);
                 }
                 else if (chessCount >= 5) {
                     return 1;
@@ -242,30 +246,33 @@ int Room::CheckResult() {
                 if (chessCount == 4) {
                     canWinPoses.insert(i * 100 + j);
                 }
+                preChess = chessCount;
                 chessCount = 0;
                 isEmptyHead = true;
             }
             else if (chessBoard[i][j].cellType == CellType::None) {
-                Log::Info("ÆåÅÌĞÅÏ¢´íÎó");
+                Log::Info("æ£‹ç›˜ä¿¡æ¯é”™è¯¯");
                 return -1;
             }
             else {
+                preChess = 0;
                 chessCount = 0;
                 isEmptyHead = false;
             }
         }
     }
 #pragma endregion
-#pragma region ÓÒĞ±
+#pragma region å³æ–œ
     for (int i = 0; i < rows - 4; i++) {
         for (int j = 0; j < columns - 4; j++) {
             bool isEmptyHead = false;
+            int preChess = 0;
             int chessCount = 0;
             for (int k = 0; k < 5; k++) {
                 if (chessBoard[i + k][j + k].cellType == targetType) {
                     chessCount++;
-                    if (chessCount == 4 && isEmptyHead) {
-                        canWinPoses.insert((i + k - 4) * 100 + j + k);
+                    if ((chessCount == 4 || preChess + chessCount == 4) && isEmptyHead) {
+                        canWinPoses.insert((i + k - chessCount) * 100 + j + k);
                     }
                     else if (chessCount >= 5) {
                         return 1;
@@ -275,11 +282,12 @@ int Room::CheckResult() {
                     if (chessCount == 4) {
                         canWinPoses.insert((i + k) * 100 + j + k);
                     }
+                    preChess = chessCount;
                     chessCount = 0;
                     isEmptyHead = true;
                 }
                 else if (chessBoard[i + k][j + k].cellType == CellType::None) {
-                    Log::Info("ÆåÅÌĞÅÏ¢´íÎó");
+                    Log::Info("æ£‹ç›˜ä¿¡æ¯é”™è¯¯");
                     return -1;
                 }
                 else {
@@ -289,16 +297,17 @@ int Room::CheckResult() {
         }
     }
 #pragma endregion
-#pragma region ×óĞ±
+#pragma region å·¦æ–œ
     for (int i = rows - 1; i >= 4; i--) {
         for (int j = 0; j < columns - 4; j++) {
             bool isEmptyHead = false;
+            int preChess = 0;
             int chessCount = 0;
             for (int k = 0; k < 5; k++) {
                 if (chessBoard[i - k][j + k].cellType == targetType) {
                     chessCount++;
-                    if (chessCount == 4 && isEmptyHead) {
-                        canWinPoses.insert((i - k - 4) * 100 + j + k);
+                    if ((chessCount == 4 || preChess + chessCount == 4) && isEmptyHead) {
+                        canWinPoses.insert((i - k - chessCount) * 100 + j + k);
                     }
                     else if (chessCount >= 5) {
                         return 1;
@@ -308,11 +317,12 @@ int Room::CheckResult() {
                     if (chessCount == 4) {
                         canWinPoses.insert((i - k) * 100 + j + k);
                     }
+                    preChess = chessCount;
                     chessCount = 0;
                     isEmptyHead = true;
                 }
                 else if (chessBoard[i - k][j + k].cellType == CellType::None) {
-                    Log::Info("ÆåÅÌĞÅÏ¢´íÎó");
+                    Log::Info("æ£‹ç›˜ä¿¡æ¯é”™è¯¯");
                     return -1;
                 }
                 else {

@@ -12,7 +12,7 @@ void ServerStart::Start() {
     int port = 8888;
 
     if (WSAStartup(MAKEWORD(2, 2), &wsaDATA) != 0) {
-        Log::Info("³õÊ¼»¯Ê§°Ü");
+        Log::Info("åˆå§‹åŒ–å¤±è´¥");
         return;
     }
 
@@ -24,12 +24,12 @@ void ServerStart::Start() {
     addrServer.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
 
     if (bind(socketServer, (LPSOCKADDR)&addrServer, sizeof(SOCKADDR_IN)) == SOCKET_ERROR) {
-        Log::Info("·şÎñÆ÷Á¬½ÓÊ§°Ü");
+        Log::Info("æœåŠ¡å™¨è¿æ¥å¤±è´¥");
         return;
     }
 
     if (listen(socketServer, 10) == SOCKET_ERROR) {
-        Log::Info("·şÎñÆ÷¼àÌıÊ§°Ü");
+        Log::Info("æœåŠ¡å™¨ç›‘å¬å¤±è´¥");
         return;
     }
 
@@ -41,13 +41,13 @@ void ServerStart::Start() {
     //    if(host!=NULL)
     //    {
     //        //*(struct in_addr*)*host->h_addr_list
-    //        Log::Info("·şÎñÆ÷IP : ", *host->h_addr_list);
+    //        Log::Info("æœåŠ¡å™¨IP : ", *host->h_addr_list);
     //    }
     //}
-    Log::Info("·şÎñÆ÷¿ªÆô³É¹¦µÈ´ı¿Í»§¶ËÁ¬½Ó£¡");
-    //Log::Info("·şÎñÆ÷IP : ", addrServer);
-    //Log::Info("·şÎñÆ÷¶Ë¿ÚºÅ £º ", addrServer.sin_port);
-    Log::Info("·şÎñÆ÷¶Ë¿ÚºÅ £º ", port);
+    Log::Info("æœåŠ¡å™¨å¼€å¯æˆåŠŸç­‰å¾…å®¢æˆ·ç«¯è¿æ¥ï¼");
+    //Log::Info("æœåŠ¡å™¨IP : ", addrServer);
+    //Log::Info("æœåŠ¡å™¨ç«¯å£å· ï¼š ", addrServer.sin_port);
+    Log::Info("æœåŠ¡å™¨ç«¯å£å· ï¼š ", port);
 
     SOCKADDR_IN addrClient;
     int len = sizeof(SOCKADDR);
@@ -55,11 +55,11 @@ void ServerStart::Start() {
     while (true) {
         SOCKET socketConnect = accept(socketServer, (SOCKADDR*)&addrClient, &len);
         if (socketConnect == SOCKET_ERROR) {
-            Log::Info("¿Í»§¶ËÁ¬½ÓÊ§°Ü");
+            Log::Info("å®¢æˆ·ç«¯è¿æ¥å¤±è´¥");
             break;
         }
 
-        Log::Info("¿Í»§¶ËÁ¬½Ó³É¹¦ IP : ", addrClient);
+        Log::Info("å®¢æˆ·ç«¯è¿æ¥æˆåŠŸ IP : ", addrClient);
 
         serverLogic.AddClient(addrClient, socketConnect);
     }

@@ -25,7 +25,7 @@ bool Button::TryTrigger(int x, int y, Game* curGame, int param) {
 		return false;
 	}
 	try {
-		//eventMap.at(_btnMsg)(); //如果不存在_btnMsg这个key，抛出out_of_range异常
+		//eventMap.at(_btnMsg)(); //濡傛灉涓嶅瓨鍦╛btnMsg杩欎釜key锛屾姏鍑簅ut_of_range寮傚父
 		if (clickEvent != nullptr) {
 			clickEvent(curGame, param);
 			return true;

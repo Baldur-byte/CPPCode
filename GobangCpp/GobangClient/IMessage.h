@@ -58,7 +58,7 @@ struct PlayerInfo_Message : IMessage
 
 struct RoomList_Message : IMessage
 {
-    short roomList[12][2]; //0  房间id   1  房间人数
+    short roomList[12][2]; //0  鎴块棿id   1  鎴块棿浜烘暟
 };
 
 struct RoomInfo_Message : IMessage
@@ -75,16 +75,16 @@ struct UpdateChessBoard_Message : IMessage
 struct OperationResult_Message : IMessage
 {
     int messageType;
-    int result; // 0 成功  1 失败
+    int result; // 0 鎴愬姛  1 澶辫触
 };
 
 struct GameStart_Message : IMessage {
-    int chessType; //0 白色  1 黑色
+    int chessType; //0 鐧借壊  1 榛戣壊
     int turn;
 };
 
 struct Change_Message : IMessage {
-    int chessType; //0 白色  1 黑色
+    int chessType; //0 鐧借壊  1 榛戣壊
 };
 
 struct GameFinish_Message : IMessage

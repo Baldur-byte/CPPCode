@@ -26,11 +26,11 @@
 //    int buttonWith = 60;
 //    int buttonHeight = 20;
 //
-//    AddButton(drawParam.screenWidth / 2 - (buttonWith / 2), drawParam.screenHeight / 2 - 30, buttonWith, buttonHeight, "¿ªÊ¼ÓÎÏ·", [](Game* curGame) {
+//    AddButton(drawParam.screenWidth / 2 - (buttonWith / 2), drawParam.screenHeight / 2 - 30, buttonWith, buttonHeight, "å¼€å§‹æ¸¸æˆ", [](Game* curGame) {
 //        //curPage = 1;
 //        curGame->Start();
 //        });
-//    AddButton(drawParam.screenWidth / 2 - (buttonWith / 2), drawParam.screenHeight / 2 + 30, buttonWith, buttonHeight, "ÍË³öÓÎÏ·", [](Game* curGame) {
+//    AddButton(drawParam.screenWidth / 2 - (buttonWith / 2), drawParam.screenHeight / 2 + 30, buttonWith, buttonHeight, "é€€å‡ºæ¸¸æˆ", [](Game* curGame) {
 //        curGame->Quit();
 //        });
 //
@@ -60,22 +60,22 @@
 //
 //    RemoveAllButton();
 //
-//    // ¿ªÊ¼ÓÎÏ·  ÖØÐÂ¿ªÊ¼  Ìí¼Ó»úÆ÷ÈË  ·µ»Ø´óÌü  ÍË³öÓÎÏ·
+//    // å¼€å§‹æ¸¸æˆ  é‡æ–°å¼€å§‹  æ·»åŠ æœºå™¨äºº  è¿”å›žå¤§åŽ…  é€€å‡ºæ¸¸æˆ
 //
 //    int buttonWith = 100;
 //    int buttonHeight = 45;
 //    int halfspace = 10;
 //
-//    AddButton(drawParam.screenWidth / 2 - buttonWith * 2 - halfspace * 3, 2 * halfspace, buttonWith, buttonHeight, "ÖØÐÂ¿ªÊ¼", [](Game* curGame) {
+//    AddButton(drawParam.screenWidth / 2 - buttonWith * 2 - halfspace * 3, 2 * halfspace, buttonWith, buttonHeight, "é‡æ–°å¼€å§‹", [](Game* curGame) {
 //        curGame->Restart();
 //        });
-//    AddButton(drawParam.screenWidth / 2 - buttonWith - halfspace, 2 * halfspace, buttonWith, buttonHeight, "Ìí¼Ó»úÆ÷ÈË", [](Game* curGame) {
+//    AddButton(drawParam.screenWidth / 2 - buttonWith - halfspace, 2 * halfspace, buttonWith, buttonHeight, "æ·»åŠ æœºå™¨äºº", [](Game* curGame) {
 //        curGame->AddNetworkRobot();
 //        });
-//    AddButton(drawParam.screenWidth / 2 + halfspace, 2 * halfspace, buttonWith, buttonHeight, "·µ»Ø´óÌü", [](Game* curGame) {
+//    AddButton(drawParam.screenWidth / 2 + halfspace, 2 * halfspace, buttonWith, buttonHeight, "è¿”å›žå¤§åŽ…", [](Game* curGame) {
 //        curGame->QuitToLobby();
 //        });
-//    AddButton(drawParam.screenWidth / 2 + buttonWith + halfspace * 2, 2 * halfspace, buttonWith, buttonHeight, "ÍË³öÓÎÏ·", [](Game* curGame) {
+//    AddButton(drawParam.screenWidth / 2 + buttonWith + halfspace * 2, 2 * halfspace, buttonWith, buttonHeight, "é€€å‡ºæ¸¸æˆ", [](Game* curGame) {
 //        curGame->QuitToStart();
 //        });
 //

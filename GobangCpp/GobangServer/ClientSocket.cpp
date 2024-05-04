@@ -3,7 +3,7 @@
 
 void ClientSocket::SendT(ClientSocket* clientSocket) {
     string s = clientSocket->id;
-    Log::Info("¿ÉÏò¿Í»§¶Ë·¢ËÍĞÅÏ¢... : ", const_cast<char*>(s.c_str()));
+    Log::Info("å¯å‘å®¢æˆ·ç«¯å‘é€ä¿¡æ¯... : ", const_cast<char*>(s.c_str()));
     char sendbuf[MESGSIZE];
     while (clientSocket->GetState() == ClientState::Connected) {
         if (!clientSocket->queueToSend.empty()) {
@@ -11,19 +11,19 @@ void ClientSocket::SendT(ClientSocket* clientSocket) {
             memcpy(sendbuf, &(clientSocket->queueToSend.front()), sizeof(MessagePack));
             if (send(clientSocket->socketClient, sendbuf, sizeof(sendbuf), 0) != SOCKET_ERROR) {
                 clientSocket->queueToSend.pop();
-                Log::Info("¿Í»§¶ËĞÅÏ¢·¢ËÍ³É¹¦... : ", const_cast<char*>(s.c_str()));
+                Log::Info("å®¢æˆ·ç«¯ä¿¡æ¯å‘é€æˆåŠŸ... : ", const_cast<char*>(s.c_str()));
             }
             else {
-                Log::Info("ÏûÏ¢·¢ËÍÊ§°Ü : ", const_cast<char*>(s.c_str()));
+                Log::Info("æ¶ˆæ¯å‘é€å¤±è´¥ : ", const_cast<char*>(s.c_str()));
             }
         }
     }
-    Log::Info("Í£Ö¹Ïò¿Í»§¶Ë·¢ËÍĞÅÏ¢... : ", const_cast<char*>(s.c_str()));
+    Log::Info("åœæ­¢å‘å®¢æˆ·ç«¯å‘é€ä¿¡æ¯... : ", const_cast<char*>(s.c_str()));
 }
 
 void ClientSocket::ReceiveT(ClientSocket* clientSocket) {
     string s = clientSocket->id;
-    Log::Info("¿Í»§¶ËĞÅÏ¢ÊÕÈ¡ÖĞ... : ", const_cast<char*>(s.c_str()));
+    Log::Info("å®¢æˆ·ç«¯ä¿¡æ¯æ”¶å–ä¸­... : ", const_cast<char*>(s.c_str()));
     char receiveBuf[1024];
     while (clientSocket->GetState() == ClientState::Connected)
     {
@@ -34,7 +34,7 @@ void ClientSocket::ReceiveT(ClientSocket* clientSocket) {
             clientSocket->Receive(&data);
         }
     }
-    Log::Info("Í£Ö¹¿Í»§¶ËĞÅÏ¢ÊÕÈ¡... : ", const_cast<char*>(s.c_str()));
+    Log::Info("åœæ­¢å®¢æˆ·ç«¯ä¿¡æ¯æ”¶å–... : ", const_cast<char*>(s.c_str()));
 }
 
 void ClientSocket::HeartBeatT(ClientSocket* clientSocket) {
@@ -84,7 +84,7 @@ void ClientSocket::Send(SCMessageType type, IMessage* message, size_t len) {
     /*memset(sendbuf, 0, sizeof(sendbuf));
     memcpy(sendbuf, &pack, sizeof(pack));*/
     /*if (send(socketClient, sendbuf, sizeof(pack), 0) != SOCKET_ERROR) {
-        Log::Info("¿Í»§¶ËĞÅÏ¢·¢ËÍ³É¹¦... : ", id);
+        Log::Info("å®¢æˆ·ç«¯ä¿¡æ¯å‘é€æˆåŠŸ... : ", id);
     }*/
     queueToSend.push(pack);
 }
@@ -99,7 +99,7 @@ void ClientSocket::Receive(MessagePack* message) {
         break;
     case CSMessageType::HeartBeatCS:
         heartInterval = 0;
-        Log::Info("ÊÕµ½ĞÄÌø°ü : ", id);
+        Log::Info("æ”¶åˆ°å¿ƒè·³åŒ… : ", id);
         HeartBeatSC_Message heartbeat;
         Send(SCMessageType::HeartBeatSC, &heartbeat, sizeof(HeartBeatSC_Message));
         break;
@@ -157,7 +157,7 @@ void ClientSocket::Receive(MessagePack* message) {
     /*int len = data->textlen;
     string str = data->text;
     str = str.substr(0, len);
-    Log::Info("ÏûÏ¢½ÓÊÕ³É¹¦ : ", const_cast<char*>(str.c_str()));*/
+    Log::Info("æ¶ˆæ¯æ¥æ”¶æˆåŠŸ : ", const_cast<char*>(str.c_str()));*/
 }
 
 ClientState ClientSocket::GetState() {
@@ -173,7 +173,7 @@ void ClientSocket::TimePass() {
 }
 
 void ClientSocket::CloseSocket() {
-    Log::Info("¿Í»§¶Ë¶Ï¿ªÁ¬½Ó : ", id);
+    Log::Info("å®¢æˆ·ç«¯æ–­å¼€è¿æ¥ : ", id);
     state = ClientState::DisConnected;
     if (player.isInRoom) {
         serverLogic->ExitRoom(&player);

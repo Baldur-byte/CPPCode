@@ -67,7 +67,7 @@ void Player::ReadyToStartGame() {
     ReadyToStartGame_Message message;
     clientSocket.Send(CSMessageType::ReadyToStartGame, &message, sizeof(ReadyToStartGame_Message));
     chessBoard->ResetChessBoard();
-    curGame->ShowMessage("×¼±¸¿ªÊ¼");
+    curGame->ShowMessage("å‡†å¤‡å¼€å§‹");
 }
 
 void Player::SetChessType(ChessType type, ChessType turn) {
@@ -76,7 +76,7 @@ void Player::SetChessType(ChessType type, ChessType turn) {
 }
 
 void Player::GameStart() {
-    curGame->ShowMessage("ÓÎÏ·¿ªÊ¼");
+    curGame->ShowMessage("æ¸¸æˆå¼€å§‹");
     curGame->ResetChessBoard();
 }
 
@@ -97,10 +97,10 @@ void Player::UpdateChessBoard(short(*chessBoardData)[15]) {
 void Player::Change(ChessType turn) {
     this->isTurn = turn == chessType;
     if (isTurn) {
-        curGame->ShowMessage("ÂÖµ½ÄãÏÂ");
+        curGame->ShowMessage("è½®åˆ°ä½ ä¸‹");
     }
     else {
-        curGame->ShowMessage("ÂÖµ½¶Ô·½ÏÂ");
+        curGame->ShowMessage("è½®åˆ°å¯¹æ–¹ä¸‹");
     }
 }
 
@@ -114,7 +114,7 @@ void Player::RestartGameRequest() {
 }
 
 void Player::RestartConfirm() {
-    curGame->ShowMessage("¶Ô·½ÇëÇóÖØĞÂ¿ªÊ¼...");
+    curGame->ShowMessage("å¯¹æ–¹è¯·æ±‚é‡æ–°å¼€å§‹...");
 }
 
 void Player::RegistOperatorResultEvent(CSMessageType type, void (*action)(Game*)) {

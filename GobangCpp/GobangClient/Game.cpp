@@ -4,8 +4,8 @@
 Game::Game() : player(this), robot(this){
     gameStart = nullptr;
     for (int i = 0; i < 12; i++) {
-        roomList[i][0] = -1; //·¿¼äid
-        roomList[i][1] = -1; //·¿¼äÈËÊý
+        roomList[i][0] = -1; //æˆ¿é—´id
+        roomList[i][1] = -1; //æˆ¿é—´äººæ•°
     }
     player.Start();
     isFinish = true;
@@ -43,7 +43,7 @@ int Game::RoomID() {
 }
 
 void Game::ReadyToStart() {
-    gameStart->ShowMessage("×¼±¸¿ªÊ¼...");
+    gameStart->ShowMessage("å‡†å¤‡å¼€å§‹...");
     player.ReadyToStartGame();
 }
 
@@ -74,16 +74,16 @@ ChessBoardCell** Game::GetChessBoardData() {
 void Game::ShowResult(int result) {
     isFinish = true;
     if (result == 1) {
-        gameStart->ShowMessage("ÄãÓ®ÁË");
+        gameStart->ShowMessage("ä½ èµ¢äº†");
     }
     else if (result == 0) {
-        gameStart->ShowMessage("Æ½¾Ö");
+        gameStart->ShowMessage("å¹³å±€");
     }
     else if (result == -1) {
-        gameStart->ShowMessage("ÄãÊäÁË");
+        gameStart->ShowMessage("ä½ è¾“äº†");
     }
     else {
-        gameStart->ShowMessage("¹ÊÕÏ");
+        gameStart->ShowMessage("æ•…éšœ");
     }
 }
 
@@ -130,7 +130,7 @@ int** Game::RoomList() {
 }
 
 void Game::RestartRequest() {
-    gameStart->ShowMessage("µÈ´ý¶Ô·½È·ÈÏ...");
+    gameStart->ShowMessage("ç­‰å¾…å¯¹æ–¹ç¡®è®¤...");
     player.RestartGameRequest();
 }
 
@@ -141,7 +141,7 @@ void Game::AddNetworkRobot() {
     haveRobot = true;
     robot.Start();
     robot.JoinRoom();
-    gameStart->ShowMessage("Ìí¼Ó»úÆ÷ÈË");
+    gameStart->ShowMessage("æ·»åŠ æœºå™¨äºº");
     robot.ReadyToStartGame();
 }
 

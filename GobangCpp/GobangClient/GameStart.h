@@ -82,7 +82,7 @@ private:
     mutex* mtx;
     Button buttons[20];
     int buttonIndex = 0;
-    int curPage = 0; // 0  ¿ªÊ¼½çÃæ   1  ·¿¼äÑ¡Ôñ   2  ÓÎÏ·½çÃæ
+    int curPage = 0; // 0  å¼€å§‹ç•Œé¢   1  æˆ¿é—´é€‰æ‹©   2  æ¸¸æˆç•Œé¢
     bool isRunning;
 
     void(*refreshPages[5]) (GameStart*);

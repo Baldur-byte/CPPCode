@@ -32,10 +32,10 @@ void GameStart::DrawStartUI() {
     int buttonWith = 60;
     int buttonHeight = 20;
 
-    AddButton(drawParam.screenWidth / 2 - (buttonWith / 2), drawParam.screenHeight / 2 - 30, buttonWith, buttonHeight, "¿ªÊ¼ÓÎÏ·", [](Game* curGame, int param) {
+    AddButton(drawParam.screenWidth / 2 - (buttonWith / 2), drawParam.screenHeight / 2 - 30, buttonWith, buttonHeight, "å¼€å§‹æ¸¸æˆ", [](Game* curGame, int param) {
         curGame->GoToLobby();
         });
-    AddButton(drawParam.screenWidth / 2 - (buttonWith / 2), drawParam.screenHeight / 2 + 30, buttonWith, buttonHeight, "ÍË³öÓÎÏ·", [](Game* curGame, int param) {
+    AddButton(drawParam.screenWidth / 2 - (buttonWith / 2), drawParam.screenHeight / 2 + 30, buttonWith, buttonHeight, "é€€å‡ºæ¸¸æˆ", [](Game* curGame, int param) {
         curGame->Quit();
         });
 
@@ -56,10 +56,10 @@ void GameStart::DrawLobbyUI() {
         int buttonHeight = 45;
         int halfspace = 10;
 
-        gameStart->AddButton(gameStart->drawParam.screenWidth / 2 - buttonWith - 30, halfspace * 5, buttonWith, buttonHeight, "»ñÈ¡·¿¼äÐÅÏ¢", [](Game* curGame, int param) {
+        gameStart->AddButton(gameStart->drawParam.screenWidth / 2 - buttonWith - 30, halfspace * 5, buttonWith, buttonHeight, "èŽ·å–æˆ¿é—´ä¿¡æ¯", [](Game* curGame, int param) {
             curGame->GetRoomList();
             });
-        gameStart->AddButton(gameStart->drawParam.screenWidth / 2  + 30, halfspace * 5, buttonWith, buttonHeight, "ÍË³öÓÎÏ·", [](Game* curGame, int param) {
+        gameStart->AddButton(gameStart->drawParam.screenWidth / 2  + 30, halfspace * 5, buttonWith, buttonHeight, "é€€å‡ºæ¸¸æˆ", [](Game* curGame, int param) {
             curGame->QuitToStart();
             });
         gameStart->DrawRooms();
@@ -78,41 +78,41 @@ void GameStart::DrawGameUI() {
 
     RemoveAllButton();
 
-    // ¿ªÊ¼ÓÎÏ·  ÖØÐÂ¿ªÊ¼  Ìí¼Ó»úÆ÷ÈË  ·µ»Ø´óÌü  ÍË³öÓÎÏ·
+    // å¼€å§‹æ¸¸æˆ  é‡æ–°å¼€å§‹  æ·»åŠ æœºå™¨äºº  è¿”å›žå¤§åŽ…  é€€å‡ºæ¸¸æˆ
 
     int buttonWith = 70;
     int buttonHeight = 22;
     int halfspace = 3;
 
-#pragma region µÚÒ»ÐÐ°´Å¥
-    AddButton(drawParam.screenWidth / 2 - buttonWith * 2 - halfspace * 3, halfspace, buttonWith, buttonHeight, "×¼±¸¿ªÊ¼", [](Game* curGame, int param) {
+#pragma region ç¬¬ä¸€è¡ŒæŒ‰é’®
+    AddButton(drawParam.screenWidth / 2 - buttonWith * 2 - halfspace * 3, halfspace, buttonWith, buttonHeight, "å‡†å¤‡å¼€å§‹", [](Game* curGame, int param) {
         curGame->ReadyToStart();
         });
 
-    AddButton(drawParam.screenWidth / 2 - buttonWith - halfspace, halfspace, buttonWith, buttonHeight, "ÖØÐÂ¿ªÊ¼", [](Game* curGame, int param) {
+    AddButton(drawParam.screenWidth / 2 - buttonWith - halfspace, halfspace, buttonWith, buttonHeight, "é‡æ–°å¼€å§‹", [](Game* curGame, int param) {
         curGame->RestartRequest();
         });
-    AddButton(drawParam.screenWidth / 2 + halfspace, halfspace, buttonWith, buttonHeight, "Ìí¼Ó»úÆ÷ÈË", [](Game* curGame, int param) {
+    AddButton(drawParam.screenWidth / 2 + halfspace, halfspace, buttonWith, buttonHeight, "æ·»åŠ æœºå™¨äºº", [](Game* curGame, int param) {
         curGame->AddNetworkRobot();
         });
-    AddButton(drawParam.screenWidth / 2 + buttonWith + halfspace * 3, halfspace, buttonWith, buttonHeight, "·µ»Ø´óÌü", [](Game* curGame, int param) {
+    AddButton(drawParam.screenWidth / 2 + buttonWith + halfspace * 3, halfspace, buttonWith, buttonHeight, "è¿”å›žå¤§åŽ…", [](Game* curGame, int param) {
         curGame->QuitToLobby();
         });
 #pragma endregion
 
-#pragma region µÚ¶þÐÐ°´Å¥
-    AddButton(drawParam.screenWidth / 2 - buttonWith * 2 - halfspace * 3, buttonHeight + halfspace * 3, buttonWith, buttonHeight, "ÍË³öÓÎÏ·", [](Game* curGame, int param) {
+#pragma region ç¬¬äºŒè¡ŒæŒ‰é’®
+    AddButton(drawParam.screenWidth / 2 - buttonWith * 2 - halfspace * 3, buttonHeight + halfspace * 3, buttonWith, buttonHeight, "é€€å‡ºæ¸¸æˆ", [](Game* curGame, int param) {
         curGame->QuitToStart();
         });
-    AddButton(drawParam.screenWidth / 2 - buttonWith - halfspace, buttonHeight + halfspace * 3, buttonWith, buttonHeight, "¿Õ°´Å¥1", [](Game* curGame, int param) {
+    AddButton(drawParam.screenWidth / 2 - buttonWith - halfspace, buttonHeight + halfspace * 3, buttonWith, buttonHeight, "ç©ºæŒ‰é’®1", [](Game* curGame, int param) {
         });
-    AddButton(drawParam.screenWidth / 2 + halfspace, buttonHeight + halfspace * 3, buttonWith, buttonHeight, "¿Õ°´Å¥2", [](Game* curGame, int param) {
+    AddButton(drawParam.screenWidth / 2 + halfspace, buttonHeight + halfspace * 3, buttonWith, buttonHeight, "ç©ºæŒ‰é’®2", [](Game* curGame, int param) {
         });
-    AddButton(drawParam.screenWidth / 2 + buttonWith + halfspace * 3, buttonHeight + halfspace * 3, buttonWith, buttonHeight, "¿Õ°´Å¥3", [](Game* curGame, int param) {
+    AddButton(drawParam.screenWidth / 2 + buttonWith + halfspace * 3, buttonHeight + halfspace * 3, buttonWith, buttonHeight, "ç©ºæŒ‰é’®3", [](Game* curGame, int param) {
         });
 #pragma endregion
 
-    std::string text = "¼ÓÈë·¿¼ä : ";
+    std::string text = "åŠ å…¥æˆ¿é—´ : ";
     text += to_string(curGame.RoomID());
     ShowMessage(text.c_str());
 
@@ -262,7 +262,7 @@ void GameStart::MainLoop() {
             }
             delay = 3;
         }
-        //¾­³£Ë¢ÐÂµÄ½çÃæ
+        //ç»å¸¸åˆ·æ–°çš„ç•Œé¢
         if (delay >= 3) {
             for (int i = 0; i < 5; i++) {
                 if (refreshPages[i] != nullptr) {

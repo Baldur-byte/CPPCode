@@ -115,7 +115,7 @@ void ClientSocket::Receive(MessagePack* message) {
     /*int len = data->textlen;
     string str = data->text;
     str = str.substr(0, len);
-    Log::Info("消息接收成功 : ", const_cast<char*>(str.c_str()));*/
+    Log::Info("娑堟伅鎺ユ敹鎴愬姛 : ", const_cast<char*>(str.c_str()));*/
 }
 
 void ClientSocket::Start(Player* player) {

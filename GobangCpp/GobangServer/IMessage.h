@@ -58,7 +58,7 @@ struct PlayerInfo_Message : IMessage
 
 struct RoomList_Message : IMessage
 {
-    short roomList[12][2]; //0  ����id   1  ��������
+    short roomList[12][2]; //0  房间id   1  房间人数
 };
 
 struct RoomInfo_Message : IMessage
@@ -75,16 +75,16 @@ struct UpdateChessBoard_Message : IMessage
 struct OperationResult_Message : IMessage
 {
     int messageType;
-    int result; // 0 �ɹ�  1 ʧ��
+    int result; // 0 成功  1 失败
 };
 
 struct GameStart_Message : IMessage {
-    int chessType; //0 ��ɫ  1 ��ɫ
+    int chessType; //0 白色  1 黑色
     int turn;
 };
 
 struct Change_Message : IMessage {
-    int chessType; //0 ��ɫ  1 ��ɫ
+    int chessType; //0 白色  1 黑色
 };
 
 struct GameFinish_Message : IMessage
@@ -206,3 +206,5 @@ struct MessagePack
 //    default: throw std::invalid_argument("Invalid color value");
 //    }
 //}
+
+//  房间内玩家比分    平局判断    胜利条件判断    玩家的棋子颜色    上一个落子位置
