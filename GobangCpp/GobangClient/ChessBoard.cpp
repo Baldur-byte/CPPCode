@@ -1,7 +1,6 @@
 #include "ChessBoard.h"
 
 ChessBoard::ChessBoard() {
-
 }
 
 ChessBoard::~ChessBoard() {
@@ -12,6 +11,9 @@ void ChessBoard::ResetChessBoard() {
     for (int i = 0; i < 15; i++) {
         for (int j = 0; j < 15; j++) {
             chessBoard[i][j] = ChessBoardCell(i, j);
+            /*chessBoard[i][j].x = i;
+            chessBoard[i][j].y = j;
+            chessBoard[i][j].cellType = CellType::Empty;*/
         }
     }
 }
@@ -37,19 +39,4 @@ bool ChessBoard::CheckPosIsEmpty(int x, int y) {
         return false;
     }
     return true;
-}
-
-void ChessBoard::SetGameResult(int result) {
-    if (result == 1) {
-        //gameStart->ShowMessage("你赢了");
-    }
-    else if (result == 0) {
-        //gameStart->ShowMessage("平局");
-    }
-    else if (result == -1) {
-        //gameStart->ShowMessage("你输了");
-    }
-    else {
-        //gameStart->ShowMessage("故障");
-    }
 }

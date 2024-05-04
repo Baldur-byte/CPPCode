@@ -20,6 +20,7 @@ public:
 	void GameStart(ChessType type);
 	void ChangePlayer();
 	void GameFinish(int win);
+	void RestartConfirm();
 #pragma endregion
 
 #pragma region Client->Server
@@ -34,6 +35,7 @@ public:
 
 	bool isInRoom;
 	bool isReady;
+	bool ReadyToRestart;
 private:
 	ClientSocket* clientSocket;
 	ChessType chessType;

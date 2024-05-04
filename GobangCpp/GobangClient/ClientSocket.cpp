@@ -48,6 +48,7 @@ void ClientSocket::HeartBeatT(ClientSocket* clientSocket) {
 ClientSocket::ClientSocket() {
     state = ClientState::DisConnected;
     heartInterval = -1;
+    isStarted = false;
 }
 
 ClientSocket::~ClientSocket() {
@@ -70,7 +71,7 @@ void ClientSocket::Receive(MessagePack* message) {
         break;
     case SCMessageType::RoomList:
         RoomList_Message roomList_Data;
-        memcpy(&roomList_Data, message->content, sizeof(UpdateChessBoard_Message));
+        memcpy(&roomList_Data, message->content, sizeof(RoomList_Message));
         player->SetRoomList(roomList_Data.roomList);
         break;
     case SCMessageType::RoomInfo:
@@ -93,6 +94,7 @@ void ClientSocket::Receive(MessagePack* message) {
         GameStart_Message gameStart_Data;
         memcpy(&gameStart_Data, message->content, sizeof(GameStart_Message));
         player->SetChessType(static_cast<ChessType>(gameStart_Data.chessType), static_cast<ChessType>(gameStart_Data.turn));
+        player->GameStart();
         break;
     case SCMessageType::Change:
         Change_Message change_Data;
@@ -104,6 +106,11 @@ void ClientSocket::Receive(MessagePack* message) {
         memcpy(&gameFinish_Data, message->content, sizeof(GameFinish_Message));
         player->GameFinish(gameFinish_Data.isWin);
         break;
+    case SCMessageType::RestartConfirm:
+        RestartConfirm_Message restartConfirm_Data;
+        memcpy(&restartConfirm_Data, message->content, sizeof(RestartConfirm_Message));
+        player->RestartConfirm();
+        break;
     }
     /*int len = data->textlen;
     string str = data->text;
@@ -112,6 +119,10 @@ void ClientSocket::Receive(MessagePack* message) {
 }
 
 void ClientSocket::Start(Player* player) {
+    if (isStarted) {
+        return;
+    }
+
     if (WSAStartup(MAKEWORD(2, 2), &wsaDATA) != 0) {
         return;
     }
@@ -139,6 +150,8 @@ void ClientSocket::Start(Player* player) {
     this->SendThread = thread(&ClientSocket::SendT, this);
     this->ReceiveThread = thread(&ClientSocket::ReceiveT, this);
     this->HeartBeatThread = thread(&ClientSocket::HeartBeatT, this);
+
+    isStarted = true;
 }
 
 void ClientSocket::Send(CSMessageType type, IMessage* message, size_t len) {

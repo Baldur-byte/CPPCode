@@ -1,6 +1,7 @@
 #pragma once
 #include <stdexcept>
-enum class SCMessageType {
+enum class SCMessageType
+{
     None = 0,
     HeartBeatSC = 1,
     CreatePlayerSC = 2,
@@ -12,9 +13,11 @@ enum class SCMessageType {
     GameStart = 8,
     Change = 9,
     GameFinish = 10,
+    RestartConfirm = 11,
 };
 
-enum class CSMessageType {
+enum class CSMessageType
+{
     None = 0,
     HeartBeatCS = 1,
     CreatePlayerCS = 2,
@@ -29,6 +32,7 @@ enum class CSMessageType {
     ReadyToStartGame = 11,
     QuitGame = 12,
     Update = 13,
+    RestartRequest = 14,
 };
 
 __interface IMessage
@@ -41,7 +45,8 @@ struct HeartBeatSC_Message : IMessage
     long long serverTime;
 };
 
-struct CreatePlayerSC_Message :IMessage {
+struct CreatePlayerSC_Message :IMessage
+{
     int playerId;
     char name[];
 };
@@ -53,7 +58,7 @@ struct PlayerInfo_Message : IMessage
 
 struct RoomList_Message : IMessage
 {
-    int roomList[12][2]; //0  房间id   1  房间人数
+    short roomList[12][2]; //0  房间id   1  房间人数
 };
 
 struct RoomInfo_Message : IMessage
@@ -86,6 +91,10 @@ struct GameFinish_Message : IMessage
 {
     int isWin;
 };
+
+struct RestartConfirm_Message : IMessage
+{
+};
 #pragma endregion
 
 #pragma region Client->Server
@@ -93,7 +102,8 @@ struct HeartBeatCS_Message : IMessage
 {
 };
 
-struct CreatePlayerCS_Message :IMessage {
+struct CreatePlayerCS_Message :IMessage
+{
 };
 
 struct UpdatePlayerInfo_Message : IMessage
@@ -144,6 +154,10 @@ struct QuitGame_Message : IMessage
 };
 
 struct Update_Message : IMessage
+{
+};
+
+struct RestartRequest_Message : IMessage
 {
 };
 #pragma endregion

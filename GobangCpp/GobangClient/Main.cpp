@@ -14,9 +14,7 @@ static void ExcuteT(GameStart* client) {
 
 int main() {
     GameStart app1;
-    //GameStart app2;
-
     thread t1(ExcuteT, &app1);
-    //thread t2(ExcuteT, &app2);
-    getchar();
+    t1.join();
+    return 0;
 }

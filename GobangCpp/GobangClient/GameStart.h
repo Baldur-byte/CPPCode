@@ -63,17 +63,18 @@ public:
     void DrawStartUI();
     void DrawLobbyUI();
     void DrawGameUI();
+    void DrawBoardFrame();
+    void DrawChessBoard();
     void DrawChess();
     void AddButton(int x, int y, int width, int height, const char* text, void (*action)(Game*, int));
     void RemoveAllButton();
     void ShowMessage(const char* text);
     void ChangePage(int page);
+    void Quit();
 private:
     void MainLoop();
     void DrawButtons();
     void DrawRooms();
-    void DrawBoardFrame();
-    void DrawChessBoard();
     void Click(int x, int y);
 
     Game curGame;

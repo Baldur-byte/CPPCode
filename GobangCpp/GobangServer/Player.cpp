@@ -9,6 +9,7 @@ Player::Player()
     this->room = nullptr;
     this->isInRoom = false;
     this->isReady = false;
+    this->ReadyToRestart = false;
 }
 
 Player::Player(ClientSocket* clientSocket)
@@ -18,6 +19,7 @@ Player::Player(ClientSocket* clientSocket)
     this->room = nullptr;
     this->isInRoom = false;
     this->isReady = false;
+    this->ReadyToRestart = false;
 }
 
 Player::~Player()
@@ -65,6 +67,11 @@ void Player::GameFinish(int win) {
 
     this->isReady = false;
 }
+
+void Player::RestartConfirm() {
+    RestartConfirm_Message message;
+    clientSocket->Send(SCMessageType::RestartConfirm, &message, sizeof(RestartConfirm_Message));
+}
 #pragma endregion
 
 #pragma region Client->Server
@@ -81,7 +88,7 @@ void Player::ExitRoom() {
 
 void Player::ReadyToStartGame() {
     this->isReady = true;
-    if (this->room->isFull()) {
+    if (isInRoom && this->room->isFull()) {
         this->room->CheckState();
     }
 }

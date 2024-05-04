@@ -8,6 +8,8 @@ Game::Game() : player(this), robot(this){
         roomList[i][1] = -1; //房间人数
     }
     player.Start();
+    isFinish = true;
+    haveRobot = false;
 }
 
 Game::~Game() {
@@ -16,21 +18,38 @@ Game::~Game() {
 
 void Game::Init(GameStart* gameStart) {
     this->gameStart = gameStart;
+    isFinish = false;
 }
 
 void Game::JoinRoom(int roomId) {
-    player.RegistOperatorResultEvent(CSMessageType::JoinRoom, [](Game* curGame) {
-        curGame->GoToGame();
-        });
-    player.JoinRoom(roomId, &chessBoard);
+    if (player.RoomID() != 0 && roomId != -1 && player.RoomID() == roomId) {
+        GoToGame();
+    }
+    else {
+        if (player.IsInRoom()) {
+            player.ExitRoom();
+            robot.ExitRoom();
+            haveRobot = false;
+        }
+        player.RegistOperatorResultEvent(CSMessageType::JoinRoom, [](Game* curGame) {
+            curGame->GoToGame();
+            });
+        player.JoinRoom(roomId, &chessBoard);
+    }
 }
 
 int Game::RoomID() {
     return player.RoomID();
 }
 
-void Game::ReadToStart() {
+void Game::ReadyToStart() {
+    gameStart->ShowMessage("准备开始...");
     player.ReadyToStartGame();
+}
+
+void Game::ResetChessBoard() {
+    gameStart->DrawBoardFrame();
+    gameStart->DrawChessBoard();
 }
 
 void Game::ClickChessBoard(int x, int y) {
@@ -52,31 +71,30 @@ ChessBoardCell** Game::GetChessBoardData() {
     return chessBoard.GetChessBoardData();
 }
 
-//void Game::SetChessBoardData(short(*chessBoard)[15]) {
-//    for (int i = 0; i < 15; i++) {
-//        for (int j = 0; j < 15; j++) {
-//            this->chessBoard[i][j].cellType = static_cast<CellType>(chessBoard[i][j]);
-//        }
-//    }
-//    gameStart->DrawChess();
-//}
-//
-//void Game::SetGameResult(int result) {
-//    if (result == 1) {
-//        gameStart->ShowMessage("你赢了");
-//    }
-//    else if (result == 0) {
-//        gameStart->ShowMessage("平局");
-//    }
-//    else if (result == -1) {
-//        gameStart->ShowMessage("你输了");
-//    }
-//    else {
-//        gameStart->ShowMessage("故障");
-//    }
-//}
+void Game::ShowResult(int result) {
+    isFinish = true;
+    if (result == 1) {
+        gameStart->ShowMessage("你赢了");
+    }
+    else if (result == 0) {
+        gameStart->ShowMessage("平局");
+    }
+    else if (result == -1) {
+        gameStart->ShowMessage("你输了");
+    }
+    else {
+        gameStart->ShowMessage("故障");
+    }
+}
+
+void Game::ShowMessage(const char* text) {
+    gameStart->ShowMessage(text);
+}
 
 void Game::GoToLobby() {
+    player.ExitRoom();
+    robot.ExitRoom();
+    haveRobot = false;
     gameStart->ChangePage(1);
 }
 
@@ -85,14 +103,17 @@ void Game::GoToGame() {
 }
 
 void Game::Quit() {
-
+    player.ExitRoom();
+    robot.ExitRoom();
+    haveRobot = false;
+    gameStart->Quit();
 }
 
 void Game::GetRoomList() {
     player.GetRoomList();
 }
 
-void Game::ReceiveRoomList(int(*inRoomList)[2]) {
+void Game::ReceiveRoomList(short(*inRoomList)[2]) {
     for (int i = 0; i < 12; i++) {
         for (int j = 0; j < 2; j++) {
             this->roomList[i][j] = inRoomList[i][j];
@@ -108,11 +129,16 @@ int** Game::RoomList() {
     return result;
 }
 
-void Game::Restart() {
-
+void Game::RestartRequest() {
+    gameStart->ShowMessage("等待对方确认...");
+    player.RestartGameRequest();
 }
 
 void Game::AddNetworkRobot() {
+    if (haveRobot) {
+        return;
+    }
+    haveRobot = true;
     robot.Start();
     robot.JoinRoom();
     gameStart->ShowMessage("添加机器人");
@@ -120,9 +146,15 @@ void Game::AddNetworkRobot() {
 }
 
 void Game::QuitToLobby() {
+    player.ExitRoom();
+    robot.ExitRoom();
+    haveRobot = false;
     gameStart->ChangePage(1);
 }
 
 void Game::QuitToStart() {
+    player.ExitRoom();
+    robot.ExitRoom();
+    haveRobot = false;
     gameStart->ChangePage(0);
 }

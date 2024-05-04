@@ -7,6 +7,7 @@ Player::Player(Game* game) {
     chessBoard = nullptr;
     curGame = game;
     roomId = 0;
+    isInRoom = false;
 }
 
 Player::~Player() {
@@ -15,6 +16,10 @@ Player::~Player() {
 
 void Player::Start() {
     clientSocket.Start(this);
+}
+
+bool Player::IsInRoom() {
+    return isInRoom;
 }
 
 int Player::RoomID() {
@@ -29,7 +34,7 @@ ChessType Player::GetChessType() {
     return chessType;
 }
 
-void Player::SetRoomList(int(*roomList)[2]) {
+void Player::SetRoomList(short(*roomList)[2]) {
     curGame->ReceiveRoomList(roomList);
 }
 
@@ -44,12 +49,25 @@ void Player::JoinRoom(int roomId, ChessBoard* chessBoard) {
     JoinRoom_Message message;
     message.roomId = roomId;
     clientSocket.Send(CSMessageType::JoinRoom, &message, sizeof(JoinRoom_Message));
+    isInRoom = true;
+}
+
+void Player::ExitRoom() {
+    if (!isInRoom) {
+        return;
+    }
+    this->roomId = 0;
+    chessBoard = nullptr;
+    ExitRoom_Message message;
+    clientSocket.Send(CSMessageType::ExitRoom, &message, sizeof(ExitRoom_Message));
+    isInRoom = false;
 }
 
 void Player::ReadyToStartGame() {
     ReadyToStartGame_Message message;
     clientSocket.Send(CSMessageType::ReadyToStartGame, &message, sizeof(ReadyToStartGame_Message));
     chessBoard->ResetChessBoard();
+    curGame->ShowMessage("准备开始");
 }
 
 void Player::SetChessType(ChessType type, ChessType turn) {
@@ -57,8 +75,12 @@ void Player::SetChessType(ChessType type, ChessType turn) {
     this->isTurn = turn == type;
 }
 
-void Player::PlaceChess(int x, int y)
-{
+void Player::GameStart() {
+    curGame->ShowMessage("游戏开始");
+    curGame->ResetChessBoard();
+}
+
+void Player::PlaceChess(int x, int y) {
     PlaceChessCS_Message message;
     message.x = x;
     message.y = y;
@@ -74,10 +96,25 @@ void Player::UpdateChessBoard(short(*chessBoardData)[15]) {
 
 void Player::Change(ChessType turn) {
     this->isTurn = turn == chessType;
+    if (isTurn) {
+        curGame->ShowMessage("轮到你下");
+    }
+    else {
+        curGame->ShowMessage("轮到对方下");
+    }
 }
 
 void Player::GameFinish(int win) {
-    chessBoard->SetGameResult(win);
+    curGame->ShowResult(win);
+}
+
+void Player::RestartGameRequest() {
+    RestartRequest_Message message;
+    clientSocket.Send(CSMessageType::RestartRequest, &message, sizeof(RestartRequest_Message));
+}
+
+void Player::RestartConfirm() {
+    curGame->ShowMessage("对方请求重新开始...");
 }
 
 void Player::RegistOperatorResultEvent(CSMessageType type, void (*action)(Game*)) {

@@ -6,10 +6,15 @@ public:
     ~Robot();
     void JoinRoom();
     void ReadyToStartGame() override;
+    void GameStart() override;
     void SetChessType(ChessType type, ChessType turn) override;
     void UpdateChessBoard(short chessBoard[15][15]) override;
     void Change(ChessType turn) override;
     void GameFinish(int win) override;
+    void RestartGameRequest() override;
+    void RestartConfirm() override;
 private:
     short chessBoard[15][15];
+
+    void tryPlaceChess();
 };

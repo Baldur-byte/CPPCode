@@ -48,6 +48,8 @@ public:
     void GameOver();
     short** GetChessBoardData();
     ChessType turn;
+    void RestartRequest();
+    void ResetChessBoard();
 private:
     int id;
     int CheckResult();

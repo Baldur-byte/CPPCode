@@ -52,5 +52,7 @@ private:
     ClientState state;
     int heartInterval;
 
+    bool isStarted;
+
     std::map<CSMessageType, void(*)(Game*)> eventMap;
 };

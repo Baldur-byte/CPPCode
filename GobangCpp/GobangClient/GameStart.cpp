@@ -56,8 +56,11 @@ void GameStart::DrawLobbyUI() {
         int buttonHeight = 45;
         int halfspace = 10;
 
-        gameStart->AddButton(gameStart->drawParam.screenWidth / 2 - buttonWith / 2, halfspace * 5, buttonWith, buttonHeight, "获取房间信息", [](Game* curGame, int param) {
+        gameStart->AddButton(gameStart->drawParam.screenWidth / 2 - buttonWith - 30, halfspace * 5, buttonWith, buttonHeight, "获取房间信息", [](Game* curGame, int param) {
             curGame->GetRoomList();
+            });
+        gameStart->AddButton(gameStart->drawParam.screenWidth / 2  + 30, halfspace * 5, buttonWith, buttonHeight, "退出游戏", [](Game* curGame, int param) {
+            curGame->QuitToStart();
             });
         gameStart->DrawRooms();
         gameStart->DrawButtons();
@@ -83,11 +86,11 @@ void GameStart::DrawGameUI() {
 
 #pragma region 第一行按钮
     AddButton(drawParam.screenWidth / 2 - buttonWith * 2 - halfspace * 3, halfspace, buttonWith, buttonHeight, "准备开始", [](Game* curGame, int param) {
-        curGame->ReadToStart();
+        curGame->ReadyToStart();
         });
 
     AddButton(drawParam.screenWidth / 2 - buttonWith - halfspace, halfspace, buttonWith, buttonHeight, "重新开始", [](Game* curGame, int param) {
-        curGame->Restart();
+        curGame->RestartRequest();
         });
     AddButton(drawParam.screenWidth / 2 + halfspace, halfspace, buttonWith, buttonHeight, "添加机器人", [](Game* curGame, int param) {
         curGame->AddNetworkRobot();
@@ -103,7 +106,7 @@ void GameStart::DrawGameUI() {
         });
     AddButton(drawParam.screenWidth / 2 - buttonWith - halfspace, buttonHeight + halfspace * 3, buttonWith, buttonHeight, "空按钮1", [](Game* curGame, int param) {
         });
-    AddButton(drawParam.screenWidth / 2 + halfspace, buttonHeight + halfspace * 3, buttonWith, buttonHeight, "添空按钮2", [](Game* curGame, int param) {
+    AddButton(drawParam.screenWidth / 2 + halfspace, buttonHeight + halfspace * 3, buttonWith, buttonHeight, "空按钮2", [](Game* curGame, int param) {
         });
     AddButton(drawParam.screenWidth / 2 + buttonWith + halfspace * 3, buttonHeight + halfspace * 3, buttonWith, buttonHeight, "空按钮3", [](Game* curGame, int param) {
         });
@@ -119,6 +122,33 @@ void GameStart::DrawGameUI() {
     DrawChessBoard();
     refreshPages[0] = [](GameStart* gameStart) {
         };
+}
+
+void GameStart::DrawBoardFrame() {
+    mtx->lock();
+    setfillcolor(LIGHTGRAY);
+    solidrectangle(drawParam.left - drawParam.badge - drawParam.frameThickness / 2, drawParam.top - drawParam.badge - drawParam.frameThickness / 2, drawParam.right + drawParam.badge + drawParam.frameThickness / 2, drawParam.bottom + drawParam.badge + drawParam.frameThickness / 2);
+    //floodfill(0, 0, BLACK, 1);
+
+    setlinecolor(BLACK);
+    setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, drawParam.frameThickness);
+    line(drawParam.left, drawParam.top, drawParam.right - drawParam.frameThickness / 2, drawParam.top);
+    line(drawParam.right, drawParam.top, drawParam.right, drawParam.bottom - drawParam.frameThickness / 2);
+    line(drawParam.right, drawParam.bottom, drawParam.left + drawParam.frameThickness / 2, drawParam.bottom);
+    line(drawParam.left, drawParam.bottom, drawParam.left, drawParam.top + drawParam.frameThickness / 2);
+    mtx->unlock();
+}
+
+void GameStart::DrawChessBoard() {
+    mtx->lock();
+    setlinecolor(BLACK);
+    setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, drawParam.lineThickness);
+
+    for (int i = 0; i < 15; i++) {
+        line(drawParam.badgeLeft, drawParam.badgeTop + drawParam.dis * i, drawParam.badgeRight, drawParam.badgeTop + drawParam.dis * i);
+        line(drawParam.badgeLeft + drawParam.dis * i, drawParam.badgeTop, drawParam.badgeLeft + drawParam.dis * i, drawParam.badgeBottom);
+    }
+    mtx->unlock();
 }
 
 void GameStart::DrawChess() {
@@ -158,7 +188,7 @@ void GameStart::AddButton(int x, int y, int width, int height, const char* text,
 
 void GameStart::RemoveAllButton() {
     for (int i = 0; i < buttonIndex; i++) {
-        buttons[buttonIndex].SetData(0, 0, 0, 0, " ", nullptr);
+        buttons[i].SetData(0, 0, 0, 0, "", nullptr);
     }
     buttonIndex = 0;
 }
@@ -180,8 +210,12 @@ void GameStart::ChangePage(int page) {
     curPage = page;
 }
 
+void GameStart::Quit() {
+    isRunning = false;
+}
+
 void GameStart::MainLoop() {
-    initgraph(drawParam.screenWidth, drawParam.screenHeight);
+    initgraph(drawParam.screenWidth, drawParam.screenHeight, EX_NOCLOSE | EX_NOMINIMIZE);
     curGame.Init(this);
     ExMessage m;
     int delay = 0;
@@ -226,7 +260,7 @@ void GameStart::MainLoop() {
                 DrawGameUI();
                 curPage = -1;
             }
-            delay = 0;
+            delay = 3;
         }
         //经常刷新的界面
         if (delay >= 3) {
@@ -241,6 +275,7 @@ void GameStart::MainLoop() {
         }
     }
     closegraph();
+    exit(0);
 }
 
 void GameStart::DrawButtons() {
@@ -281,7 +316,7 @@ void GameStart::DrawRooms() {
         const char* text = textStr.c_str();
         AddButton(r.left, r.top, roomCellWidth, roomCellHeight, text, [](Game* curGame, int param) {
             int roomId = 0;
-            roomId = curGame->RoomList()[param - 1][0];
+            roomId = curGame->RoomList()[param - 2][0];
             curGame->JoinRoom(roomId);
             });
         //fillroundrect(r.left, r.top, r.right, r.bottom, 3, 3);
@@ -291,29 +326,6 @@ void GameStart::DrawRooms() {
         drawtext(buffer, &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);*/
         mtx->unlock();
     }
-}
-
-void GameStart::DrawBoardFrame() {
-    mtx->lock();
-    setlinecolor(BLACK);
-    setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, drawParam.frameThickness);
-    line(drawParam.left, drawParam.top, drawParam.right - drawParam.frameThickness / 2, drawParam.top);
-    line(drawParam.right, drawParam.top, drawParam.right, drawParam.bottom - drawParam.frameThickness / 2);
-    line(drawParam.right, drawParam.bottom, drawParam.left + drawParam.frameThickness / 2, drawParam.bottom);
-    line(drawParam.left, drawParam.bottom, drawParam.left, drawParam.top + drawParam.frameThickness / 2);
-    mtx->unlock();
-}
-
-void GameStart::DrawChessBoard() {
-    mtx->lock();
-    setlinecolor(BLACK);
-    setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, drawParam.lineThickness);
-
-    for (int i = 0; i < 15; i++) {
-        line(drawParam.badgeLeft, drawParam.badgeTop + drawParam.dis * i, drawParam.badgeRight, drawParam.badgeTop + drawParam.dis * i);
-        line(drawParam.badgeLeft + drawParam.dis * i, drawParam.badgeTop, drawParam.badgeLeft + drawParam.dis * i, drawParam.badgeBottom);
-    }
-    mtx->unlock();
 }
 
 void GameStart::Click(int x, int y) {

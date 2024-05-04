@@ -4,11 +4,6 @@ Room::Room() {
     id = 0;
     playerCount = 0;
     turn = ChessType::None;
-    for (int i = 0; i < 15; i++) {
-        for (int j = 0; j < 15; j++) {
-            chessBoard[i][j] = ChessBoardCell(i, j);
-        }
-    }
     Players[0] = nullptr;
     Players[1] = nullptr;
 }
@@ -87,6 +82,7 @@ void Room::CheckState() {
 
 void Room::GameStart(ChessType turn) {
     Log::Info("游戏开始了");
+    ResetChessBoard();
     this->turn = turn;
     for (int i = 0; i < playerCount; i++) {
         Players[i]->GameStart(turn);
@@ -150,6 +146,31 @@ short** Room::GetChessBoardData() {
     }
     mtx.unlock();
     return result;
+}
+
+void Room::RestartRequest() {
+    if (!isFull()) {
+        return;
+    }
+    if (Players[0]->ReadyToRestart && Players[1]->ReadyToRestart) {
+        Players[0]->ReadyToRestart = false;
+        Players[1]->ReadyToRestart = false;
+        GameStart(FIRST_TO_PLACE);
+    }
+    else if (!Players[0]->ReadyToRestart) {
+        Players[0]->RestartConfirm();
+    }
+    else if (!Players[1]->ReadyToRestart) {
+        Players[1]->RestartConfirm();
+    }
+}
+
+void Room::ResetChessBoard() {
+    for (int i = 0; i < 15; i++) {
+        for (int j = 0; j < 15; j++) {
+            chessBoard[i][j] = ChessBoardCell(i, j);
+        }
+    }
 }
 
 int Room::CheckResult() {

@@ -55,7 +55,6 @@ ClientSocket::ClientSocket() {
     serverLogic = nullptr;
     state = ClientState::DisConnected;
     heartInterval = -1;
-    sendbuf;
 }
 
 ClientSocket::~ClientSocket()
@@ -149,6 +148,10 @@ void ClientSocket::Receive(MessagePack* message) {
     case CSMessageType::QuitGame:
         break;
     case CSMessageType::Update:
+        break;
+    case CSMessageType::RestartRequest:
+        player.ReadyToRestart = true;
+        player.GetRoom()->RestartRequest();
         break;
     }
     /*int len = data->textlen;

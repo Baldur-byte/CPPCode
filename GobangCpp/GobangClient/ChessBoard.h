@@ -33,7 +33,6 @@ public:
     void SetChessBoardData(short(*chessBoard)[15]);
     ChessBoardCell** GetChessBoardData();
     bool CheckPosIsEmpty(int x, int y);
-    void SetGameResult(int result);
 private:
     ChessBoardCell chessBoard[15][15];
 };

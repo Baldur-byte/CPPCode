@@ -10,7 +10,7 @@ void Button::SetData(int x, int y, int width, int height, const char* text, void
 	rect.y = y;
 	rect.width = width;
 	rect.height = height;
-	//memset(this->text, 0, strlen(text));
+	memset(this->text, 0, strlen(this->text));
 	memcpy(&(this->text), text, strlen(text));
 	//this->text = text;
 	clickEvent = action;
